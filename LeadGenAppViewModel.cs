@@ -7,7 +7,7 @@ using Point = System.Drawing.Point;
 
 namespace LeadGenApp
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class LeadGenAppViewModel : INotifyPropertyChanged
     {
         #region Variables
         private readonly Point MessageButtonPointSmallScreen = new Point(255, 595);
@@ -68,7 +68,7 @@ namespace LeadGenApp
         public ICommand ConnectCommand { get; }
 
 
-        public MainViewModel()
+        public LeadGenAppViewModel()
         {
             ClickMessageButtonCommand = new RelayCommand(_ => ExecuteClickMessageButtonCommand());
             ConnectCommand = new RelayCommand(_ => ExecuteConnectCommand());
@@ -172,7 +172,7 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
         }
 
-        private void PasteTo(Point point, string? text = null)
+        private void PasteTo(Point point, string text)
         {
             Thread.Sleep(ShortDelay);
 
@@ -181,8 +181,7 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
             _inputSimulator.Mouse.LeftButtonClick();
 
-            if (text != null)
-                Clipboard.SetText(text);
+            Clipboard.SetText(text);
 
             Thread.Sleep(ShortDelay);
             User32Wrapper.KeyDown(User32Wrapper.ControlCode);
@@ -194,7 +193,7 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
         }
 
-        private void PasteReplaceTo(Point point, string? text = null)
+        private void PasteReplaceTo(Point point)
         {
             Thread.Sleep(ShortDelay);
 
@@ -202,9 +201,6 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
             _inputSimulator.Mouse.LeftButtonClick();
             _inputSimulator.Mouse.LeftButtonClick();
-
-            if (text != null)
-                Clipboard.SetText(text);
 
             Thread.Sleep(ShortDelay);
             User32Wrapper.KeyDown(User32Wrapper.ControlCode);

@@ -2,11 +2,11 @@
 
 namespace LeadGenApp
 {
-    public partial class MainWindow : Window
+    public partial class LeadGenAppWindow : Window
     {
-        private MainViewModel _viewModel = new();
+        private LeadGenAppViewModel _viewModel = new();
 
-        public MainWindow()
+        public LeadGenAppWindow()
         {
             InitializeComponent();
 
