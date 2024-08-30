@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:LeadGenApp"
         mc:Ignorable="d"
         Title="LeadGenAppWindow"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        Icon="pack://application:,,,/icons/LeadGenAppIcon.ico">
     <Grid Margin="50"
           HorizontalAlignment="Center">
         <Grid.Resources>
