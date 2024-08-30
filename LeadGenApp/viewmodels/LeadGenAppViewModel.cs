@@ -36,17 +36,17 @@ namespace LeadGenApp.viewmodels
         private readonly Point RecruiterNameFromDirectMessageContentPointBigScreen = new Point(1490, 850);
         private readonly Point SendDirectMessageButtonPointBigScreen = new Point(1940, 1325);
 
-        private Point MessageButtonPoint => IsBigScreenChecked ? MessageButtonPointBigScreen : MessageButtonPointSmallScreen;
-        private Point IsFreeToOpenProfileTextPoint => IsBigScreenChecked ? IsFreeToOpenProfileTextPointBigScreen : IsFreeToOpenProfileTextPointSmallScreen;
-        private Point ThreeDotsButtonPoint => IsBigScreenChecked ? ThreeDotsButtonPointBigScreen : ThreeDotsButtonPointSmallScreen;
-        private Point ConnectSubItemPoint => IsBigScreenChecked ? ConnectSubItemPointBigScreen : ConnectSubItemPointSmallScreen;
-        private Point RecruiterNameFromEditableInvitationBoxPoint => IsBigScreenChecked ? RecruiterNameFromEditableInvitationBoxPointBigScreen : RecruiterNameFromEditableInvitationBoxPointSmallScreen;
-        private Point RecruiterNameFromStaticInvitationBoxPoint => IsBigScreenChecked ? RecruiterNameFromStaticInvitationBoxPointBigScreen : RecruiterNameFromStaticInvitationBoxPointSmallScreen;
-        private Point SendInvitationButtonPoint => IsBigScreenChecked ? SendInvitationButtonPointBigScreen : SendInvitationButtonPointSmallScreen;
-        private Point DirectMessageSubjectPoint => IsBigScreenChecked ? DirectMessageSubjectPointBigScreen : DirectMessageSubjectPointSmallScreen;
-        private Point RecruiterNameFromBelowPicturePoint => IsBigScreenChecked ? RecruiterNameFromBelowPicturePointBigScreen : RecruiterNameFromBelowPicturePointSmallScreen;
-        private Point RecruiterNameFromDirectMessageContentPoint => IsBigScreenChecked ? RecruiterNameFromDirectMessageContentPointBigScreen : RecruiterNameFromDirectMessageContentPointSmallScreen;
-        private Point SendDirectMessageButtonPoint => IsBigScreenChecked ? SendDirectMessageButtonPointBigScreen : SendDirectMessageButtonPointSmallScreen;
+        private Point MessageButtonPoint => IsSmallScreenChecked ? MessageButtonPointSmallScreen : MessageButtonPointBigScreen;
+        private Point IsFreeToOpenProfileTextPoint => IsSmallScreenChecked ? IsFreeToOpenProfileTextPointSmallScreen : IsFreeToOpenProfileTextPointBigScreen;
+        private Point ThreeDotsButtonPoint => IsSmallScreenChecked ? ThreeDotsButtonPointSmallScreen : ThreeDotsButtonPointBigScreen;
+        private Point ConnectSubItemPoint => IsSmallScreenChecked ? ConnectSubItemPointSmallScreen : ConnectSubItemPointBigScreen;
+        private Point RecruiterNameFromEditableInvitationBoxPoint => IsSmallScreenChecked ? RecruiterNameFromEditableInvitationBoxPointSmallScreen : RecruiterNameFromEditableInvitationBoxPointBigScreen;
+        private Point RecruiterNameFromStaticInvitationBoxPoint => IsSmallScreenChecked ? RecruiterNameFromStaticInvitationBoxPointSmallScreen : RecruiterNameFromStaticInvitationBoxPointBigScreen;
+        private Point SendInvitationButtonPoint => IsSmallScreenChecked ? SendInvitationButtonPointSmallScreen : SendInvitationButtonPointBigScreen;
+        private Point DirectMessageSubjectPoint => IsSmallScreenChecked ? DirectMessageSubjectPointSmallScreen : DirectMessageSubjectPointBigScreen;
+        private Point RecruiterNameFromBelowPicturePoint => IsSmallScreenChecked ? RecruiterNameFromBelowPicturePointSmallScreen : RecruiterNameFromBelowPicturePointBigScreen;
+        private Point RecruiterNameFromDirectMessageContentPoint => IsSmallScreenChecked ? RecruiterNameFromDirectMessageContentPointSmallScreen : RecruiterNameFromDirectMessageContentPointBigScreen;
+        private Point SendDirectMessageButtonPoint => IsSmallScreenChecked ? SendDirectMessageButtonPointSmallScreen : SendDirectMessageButtonPointBigScreen;
         #endregion Variables
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -61,7 +61,7 @@ namespace LeadGenApp.viewmodels
         private const int ShortDelay = 200;
         private const int LongDelay = 1500;
 
-        public bool IsBigScreenChecked { get; set; } = true;
+        public bool IsSmallScreenChecked { get; set; } = false;
 
         public int NumberOfTabsClickMessageButton { get; set; } = 1;
         public int NumberOfTabsConnect { get; set; } = 1;
