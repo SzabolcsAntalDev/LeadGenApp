@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using LeadGenApp.common;
+using LeadGenApp.input;
 using WindowsInput;
 using Cursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
-namespace LeadGenApp
+namespace LeadGenApp.viewmodels
 {
     public class LeadGenAppViewModel : INotifyPropertyChanged
     {

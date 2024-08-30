@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace LeadGenApp
+namespace LeadGenApp.common
 {
     public class RelayCommand : ICommand
     {

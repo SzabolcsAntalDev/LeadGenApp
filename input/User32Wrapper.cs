@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LeadGenApp
+namespace LeadGenApp.input
 {
     public class User32Wrapper
     {
@@ -17,16 +17,16 @@ namespace LeadGenApp
         public const int CCode = 0x43;
 
         [DllImport("user32.dll")]
-        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, nuint dwExtraInfo);
 
         public static void KeyDown(byte keyCode)
         {
-            keybd_event(keyCode, 0, KeyDownCode, UIntPtr.Zero);
+            keybd_event(keyCode, 0, KeyDownCode, nuint.Zero);
         }
 
         public static void KeyUp(byte keyCode)
         {
-            keybd_event(keyCode, 0, KeyUpCode, UIntPtr.Zero);
+            keybd_event(keyCode, 0, KeyUpCode, nuint.Zero);
         }
 
         public static void KeyPress(byte keyCode)
