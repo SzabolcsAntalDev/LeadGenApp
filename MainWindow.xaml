@@ -33,8 +33,6 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -53,14 +51,6 @@
         <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding NumberOfTabsClickMessageButton}" />
         <Button    Grid.Row="1" Grid.Column="2" Content="click message button" Command="{Binding ClickMessageButtonCommand}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="nr. of tabs:" />
-        <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding NumberOfTabsSendInvitation}" />
-        <Button    Grid.Row="2" Grid.Column="2" Content="send invitation" Command="{Binding SendInvitationCommand}" />
-
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="nr. of tabs:" />
-        <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding NumberOfTabsSendDirectMessage}" />
-        <Button    Grid.Row="3" Grid.Column="2" Content="send direct message" Command="{Binding SendDirectMessageCommand}" />
-        
         <TextBlock Grid.Row="4" Grid.Column="0" Text="nr. of tabs:" />
         <TextBox   Grid.Row="4" Grid.Column="1" Text="{Binding NumberOfTabsConnect}" />
         <Button    Grid.Row="4" Grid.Column="2" Content="connect" Command="{Binding ConnectCommand}" />

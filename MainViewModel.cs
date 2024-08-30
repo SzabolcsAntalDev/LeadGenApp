@@ -3,41 +3,74 @@ using System.Windows;
 using System.Windows.Input;
 using WindowsInput;
 using Cursor = System.Windows.Forms.Cursor;
+using Point = System.Drawing.Point;
 
 namespace LeadGenApp
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        #region Variables
+        private readonly Point MessageButtonPointSmallScreen = new Point(255, 595);
+        private readonly Point IsFreeToOpenProfileTextPointSmallScreen = new Point(1325, 530);
+        private readonly Point ThreeDotsButtonPointSmallScreen = new Point(350, 600);
+        private readonly Point ConnectSubItemPointSmallScreen = new Point(200, 650);
+        private readonly Point RecruiterNameFromEditableInvitationBoxPointSmallScreen = new Point(750, 595);
+        private readonly Point RecruiterNameFromStaticInvitationBoxPointSmallScreen = new Point(765, 505);
+        private readonly Point SendInvitationButtonPointSmallScreen = new Point(1120, 715);
+        private readonly Point DirectMessageSubjectPointSmallScreen = new Point(1040, 565);
+        private readonly Point RecruiterNameFromBelowPicturePointSmallScreen = new Point(70, 500);
+        private readonly Point RecruiterNameFromDirectMessageContentPointSmallScreen = new Point(1055, 610);
+        private readonly Point SendDirectMessageButtonPointSmallScreen = new Point(1425, 990);
+
+        private readonly Point MessageButtonPointBigScreen = new Point(390, 745);
+        private readonly Point IsFreeToOpenProfileTextPointBigScreen = new Point(1820, 755);
+        private readonly Point ThreeDotsButtonPointBigScreen = new Point(505, 740);
+        private readonly Point ConnectSubItemPointBigScreen = new Point(310, 815);
+        private readonly Point RecruiterNameFromEditableInvitationBoxPointBigScreen = new Point(1010, 790);
+        private readonly Point RecruiterNameFromStaticInvitationBoxPointBigScreen = new Point(1040, 670);
+        private readonly Point SendInvitationButtonPointBigScreen = new Point(1500, 940);
+        private readonly Point DirectMessageSubjectPointBigScreen = new Point(1460, 800);
+        private readonly Point RecruiterNameFromBelowPicturePointBigScreen = new Point(170, 620);
+        private readonly Point RecruiterNameFromDirectMessageContentPointBigScreen = new Point(1490, 850);
+        private readonly Point SendDirectMessageButtonPointBigScreen = new Point(1940, 1325);
+
+        private Point MessageButtonPoint => IsBigScreenChecked ? MessageButtonPointBigScreen : MessageButtonPointSmallScreen;
+        private Point IsFreeToOpenProfileTextPoint => IsBigScreenChecked ? IsFreeToOpenProfileTextPointBigScreen : IsFreeToOpenProfileTextPointSmallScreen;
+        private Point ThreeDotsButtonPoint => IsBigScreenChecked ? ThreeDotsButtonPointBigScreen : ThreeDotsButtonPointSmallScreen;
+        private Point ConnectSubItemPoint => IsBigScreenChecked ? ConnectSubItemPointBigScreen : ConnectSubItemPointSmallScreen;
+        private Point RecruiterNameFromEditableInvitationBoxPoint => IsBigScreenChecked ? RecruiterNameFromEditableInvitationBoxPointBigScreen : RecruiterNameFromEditableInvitationBoxPointSmallScreen;
+        private Point RecruiterNameFromStaticInvitationBoxPoint => IsBigScreenChecked ? RecruiterNameFromStaticInvitationBoxPointBigScreen : RecruiterNameFromStaticInvitationBoxPointSmallScreen;
+        private Point SendInvitationButtonPoint => IsBigScreenChecked ? SendInvitationButtonPointBigScreen : SendInvitationButtonPointSmallScreen;
+        private Point DirectMessageSubjectPoint => IsBigScreenChecked ? DirectMessageSubjectPointBigScreen : DirectMessageSubjectPointSmallScreen;
+        private Point RecruiterNameFromBelowPicturePoint => IsBigScreenChecked ? RecruiterNameFromBelowPicturePointBigScreen : RecruiterNameFromBelowPicturePointSmallScreen;
+        private Point RecruiterNameFromDirectMessageContentPoint => IsBigScreenChecked ? RecruiterNameFromDirectMessageContentPointBigScreen : RecruiterNameFromDirectMessageContentPointSmallScreen;
+        private Point SendDirectMessageButtonPoint => IsBigScreenChecked ? SendDirectMessageButtonPointBigScreen : SendDirectMessageButtonPointSmallScreen;
+        #endregion Variables
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private const string InvitationContent = "Hi Name,\r\n\r\nI am a C# .NET software engineer with 11 years of experience, currently working as a contractor/consultant and looking for a new project. If you are aware of any open job positions of this kind, I would appreciate it if you could let me know. :)\r\n\r\nBest regards.";
         private const string DirectMessageSubject = "C# .NET software developer looking for remote job";
-        private const string DirectMessageContent = InvitationContent;
+        private const string DirectMessageContent = "Hi Name,\r\n\r\nI am a C# .NET software engineer with 11 years of experience, currently working as a contractor/consultant and looking for a new project. If you are aware of any open job positions of this kind, I would appreciate it if you could let me know. :)\r\n\r\nBest regards,";
 
         private readonly InputSimulator _inputSimulator = new();
 
         private const int WaitBeforeActionStart = 3000;
-        private const int ShortDelay = 100;
-        private const int LongDelay = 1000;
+        private const int ShortDelay = 200;
+        private const int LongDelay = 1500;
 
         public bool IsBigScreenChecked { get; set; } = true;
 
         public int NumberOfTabsClickMessageButton { get; set; } = 1;
-        public int NumberOfTabsSendInvitation { get; set; } = 1;
-        public int NumberOfTabsSendDirectMessage { get; set; } = 1;
         public int NumberOfTabsConnect { get; set; } = 1;
 
         public ICommand ClickMessageButtonCommand { get; }
-        public ICommand SendInvitationCommand { get; }
-        public ICommand SendDirectMessageCommand { get; }
         public ICommand ConnectCommand { get; }
 
 
         public MainViewModel()
         {
             ClickMessageButtonCommand = new RelayCommand(_ => ExecuteClickMessageButtonCommand());
-            SendInvitationCommand = new RelayCommand(_ => ExecuteSendInvitationCommand());
-            SendDirectMessageCommand = new RelayCommand(_ => ExecuteSendDirectMessageCommand());
             ConnectCommand = new RelayCommand(_ => ExecuteConnectCommand());
         }
 
@@ -50,49 +83,6 @@ namespace LeadGenApp
                 ClickMessageButton();
                 ChangeTab();
             }
-        }
-
-        private void ExecuteSendInvitationCommand()
-        {
-            Thread.Sleep(WaitBeforeActionStart);
-
-            for (int i = 0; i < NumberOfTabsSendInvitation; i++)
-                SendInvitation();
-        }
-
-        private void SendInvitation()
-        {
-            ClickOnThreeDots();
-            ClickOnConnect();
-            InsertInvitationContent();
-            CopyRecruiterNameFromInvitationBox();
-            ScrollUpInvitationText();
-            PasteRecruiterNameToInvitationBox();
-            DeleteLastCharacter();
-            ClickSendInvitation();
-            Thread.Sleep(LongDelay);
-            ChangeTab();
-        }
-
-        private void ExecuteSendDirectMessageCommand()
-        {
-            Thread.Sleep(WaitBeforeActionStart);
-
-            for (int i = 0; i < NumberOfTabsSendDirectMessage; i++)
-                SendDirectMessage();
-        }
-
-        private void SendDirectMessage()
-        {
-            ClickMessageButton();
-            InsertDirectMessageSubject();
-            InsertDirectMessageContent();
-            CopyRecruiterNameFromBelowPicture();
-            PasteRecruiterNameToDirectMessageContent();
-            DeleteLastCharacter();
-            ClickSendDirectMessage();
-            Thread.Sleep(LongDelay);
-            ChangeTab();
         }
 
         private void ExecuteConnectCommand()
@@ -110,18 +100,39 @@ namespace LeadGenApp
             }
         }
 
-        private bool IsFreeToOpenProfile()
+        private void SendInvitation()
         {
-            CopyFrom(1820, 755);
-            return Clipboard.GetText() == "Free ";
+            ClickOnThreeDots();
+            ClickOnConnect();
+            InsertInvitationContent();
+            CopyRecruiterNameFromInvitationBox();
+            ScrollUpInvitationText();
+            PasteRecruiterNameToInvitationBox();
+            DeleteLastCharacter();
+            ClickSendInvitation();
+            Thread.Sleep(LongDelay);
+            ChangeTab();
+        }
+
+        private void SendDirectMessage()
+        {
+            ClickMessageButton();
+            InsertDirectMessageSubject();
+            InsertDirectMessageContent();
+            CopyRecruiterNameFromBelowPicture();
+            PasteRecruiterNameToDirectMessageContent();
+            DeleteLastCharacter();
+            ClickSendDirectMessage();
+            Thread.Sleep(LongDelay);
+            ChangeTab();
         }
 
         #region Common
-        private void ClickTo(int x, int y)
+        private void ClickTo(Point point)
         {
             Thread.Sleep(ShortDelay);
 
-            Cursor.Position = new System.Drawing.Point(x, y);
+            Cursor.Position = point;
             _inputSimulator.Mouse.LeftButtonClick();
 
             Thread.Sleep(ShortDelay);
@@ -140,11 +151,11 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
         }
 
-        private void CopyFrom(int x, int y)
+        private void CopyFrom(Point point)
         {
             Thread.Sleep(ShortDelay);
 
-            var cursorPosition = new System.Drawing.Point(x, y);
+            var cursorPosition = point;
 
             Thread.Sleep(ShortDelay);
 
@@ -161,11 +172,11 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
         }
 
-        private void PasteTo(int x, int y, string? text = null)
+        private void PasteTo(Point point, string? text = null)
         {
             Thread.Sleep(ShortDelay);
 
-            Cursor.Position = new System.Drawing.Point(x, y);
+            Cursor.Position = point;
 
             Thread.Sleep(ShortDelay);
             _inputSimulator.Mouse.LeftButtonClick();
@@ -183,11 +194,11 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
         }
 
-        private void PasteReplaceTo(int x, int y, string? text = null)
+        private void PasteReplaceTo(Point point, string? text = null)
         {
             Thread.Sleep(ShortDelay);
 
-            Cursor.Position = new System.Drawing.Point(x, y);
+            Cursor.Position = point;
             Thread.Sleep(ShortDelay);
             _inputSimulator.Mouse.LeftButtonClick();
             _inputSimulator.Mouse.LeftButtonClick();
@@ -205,11 +216,11 @@ namespace LeadGenApp
             Thread.Sleep(ShortDelay);
         }
 
-        private void ScrollUpAt(int x, int y)
+        private void ScrollUpAt(Point point)
         {
             Thread.Sleep(ShortDelay);
 
-            Cursor.Position = new System.Drawing.Point(x, y);
+            Cursor.Position = point;
             Thread.Sleep(ShortDelay);
             _inputSimulator.Mouse.LeftButtonClick();
             Thread.Sleep(ShortDelay);
@@ -226,73 +237,80 @@ namespace LeadGenApp
 
             Thread.Sleep(ShortDelay);
         }
+
+        private void ClickMessageButton()
+        {
+            ClickTo(MessageButtonPoint);
+        }
+
+        private bool IsFreeToOpenProfile()
+        {
+            CopyFrom(IsFreeToOpenProfileTextPoint);
+            return Clipboard.GetText() == "Free ";
+        }
         #endregion Common
 
         #region Invitation
         private void ClickOnThreeDots()
         {
-            ClickTo(505, 740);
+            ClickTo(ThreeDotsButtonPoint);
         }
 
         private void ClickOnConnect()
         {
-            ClickTo(310, 815);
+            ClickTo(ConnectSubItemPoint);
         }
 
         private void InsertInvitationContent()
         {
-            PasteTo(1000, 790, InvitationContent);
+            PasteTo(RecruiterNameFromEditableInvitationBoxPoint, InvitationContent);
         }
+
         private void CopyRecruiterNameFromInvitationBox()
         {
-            CopyFrom(1040, 675);
+            CopyFrom(RecruiterNameFromStaticInvitationBoxPoint);
         }
 
         private void ScrollUpInvitationText()
         {
-            ScrollUpAt(1000, 790);
+            ScrollUpAt(RecruiterNameFromEditableInvitationBoxPoint);
         }
 
         private void PasteRecruiterNameToInvitationBox()
         {
-            PasteReplaceTo(1010, 785);
+            PasteReplaceTo(RecruiterNameFromEditableInvitationBoxPoint);
         }
 
         private void ClickSendInvitation()
         {
-            ClickTo(1500, 940);
+            ClickTo(SendInvitationButtonPoint);
         }
         #endregion Invitation
 
         #region Direct Message
-        private void ClickMessageButton()
-        {
-            ClickTo(390, 745);
-        }
-
         private void InsertDirectMessageSubject()
         {
-            PasteTo(1460, 800, DirectMessageSubject);
+            PasteTo(DirectMessageSubjectPoint, DirectMessageSubject);
         }
 
         private void InsertDirectMessageContent()
         {
-            PasteTo(1460, 850, DirectMessageContent);
+            PasteTo(RecruiterNameFromDirectMessageContentPoint, DirectMessageContent);
         }
 
         private void CopyRecruiterNameFromBelowPicture()
         {
-            CopyFrom(155, 620);
+            CopyFrom(RecruiterNameFromBelowPicturePoint);
         }
 
         private void PasteRecruiterNameToDirectMessageContent()
         {
-            PasteReplaceTo(1490, 850);
+            PasteReplaceTo(RecruiterNameFromDirectMessageContentPoint);
         }
 
         private void ClickSendDirectMessage()
         {
-            ClickTo(1940, 1325);
+            ClickTo(SendDirectMessageButtonPoint);
         }
         #endregion Direct Message
     }
