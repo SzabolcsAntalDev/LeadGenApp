@@ -12,25 +12,37 @@ namespace LeadGenApp.viewmodels
     public class LeadGenAppViewModel : INotifyPropertyChanged
     {
         #region Variables
-        private readonly Point MessageButtonPointSmallScreen = new Point(255, 595);
+        private readonly bool IsTesting = false;
+
+        private readonly Point MessageButtonPointSmallScreen = new Point(255, 575);
         private readonly Point IsFreeToOpenProfileTextPointSmallScreen = new Point(1325, 530);
-        private readonly Point ThreeDotsButtonPointSmallScreen = new Point(350, 600);
-        private readonly Point ConnectSubItemPointSmallScreen = new Point(200, 650);
-        private readonly Point RecruiterNameFromEditableInvitationBoxPointSmallScreen = new Point(750, 595);
-        private readonly Point RecruiterNameFromStaticInvitationBoxPointSmallScreen = new Point(765, 505);
-        private readonly Point SendInvitationButtonPointSmallScreen = new Point(1120, 715);
+        private readonly Point ThreeDotsButtonPointSmallScreen = new Point(350, 575);
+        private readonly Point ConnectSubItemPointSmallScreen = new Point(200, 645);
+        private readonly Point EmailRequiredInInvitationBoxPointSmallScreen = new Point(715, 620);
+        private readonly Point EmailAddressInInvitationBoxPointSmallScreen = new Point(720, 660);
+        private readonly Point RecruiterNameFromEditableInvitationBoxWithoutEmailPointSmallScreen = new Point(750, 595);
+        private readonly Point RecruiterNameFromStaticInvitationBoxWithoutEmailPointSmallScreen = new Point(765, 505);
+        private readonly Point RecruiterNameFromEditableInvitationBoxWithEmailPointSmallScreen = new Point(740, 555);
+        private readonly Point RecruiterNameFromStaticInvitationBoxWithEmailPointSmallScreen = new Point(770, 465);
+        private readonly Point SendInvitationButtonWithoutEmailPointSmallScreen = new Point(1120, 715);
+        private readonly Point SendInvitationButtonWithEmailPointSmallScreen = new Point(1135, 750);
         private readonly Point DirectMessageSubjectPointSmallScreen = new Point(1040, 565);
         private readonly Point RecruiterNameFromBelowPicturePointSmallScreen = new Point(70, 500);
         private readonly Point RecruiterNameFromDirectMessageContentPointSmallScreen = new Point(1055, 610);
         private readonly Point SendDirectMessageButtonPointSmallScreen = new Point(1425, 990);
 
-        private readonly Point MessageButtonPointBigScreen = new Point(390, 745);
+        private readonly Point MessageButtonPointBigScreen = new Point(390, 720);
         private readonly Point IsFreeToOpenProfileTextPointBigScreen = new Point(1820, 755);
-        private readonly Point ThreeDotsButtonPointBigScreen = new Point(505, 740);
-        private readonly Point ConnectSubItemPointBigScreen = new Point(310, 815);
-        private readonly Point RecruiterNameFromEditableInvitationBoxPointBigScreen = new Point(1010, 790);
-        private readonly Point RecruiterNameFromStaticInvitationBoxPointBigScreen = new Point(1040, 670);
-        private readonly Point SendInvitationButtonPointBigScreen = new Point(1500, 940);
+        private readonly Point ThreeDotsButtonPointBigScreen = new Point(505, 720);
+        private readonly Point ConnectSubItemPointBigScreen = new Point(310, 800);
+        private readonly Point EmailRequiredInInvitationBoxPointBigScreen = new Point(970, 820);
+        private readonly Point EmailAddressInInvitationBoxPointBigScreen = new Point(980, 870);
+        private readonly Point RecruiterNameFromEditableInvitationBoxWithoutEmailPointBigScreen = new Point(1010, 790);
+        private readonly Point RecruiterNameFromStaticInvitationBoxWithoutEmailPointBigScreen = new Point(1040, 670);
+        private readonly Point RecruiterNameFromEditableInvitationBoxWithEmailPointBigScreen = new Point(1010, 740);
+        private readonly Point RecruiterNameFromStaticInvitationBoxWithEmailPointBigScreen = new Point(1040, 630);
+        private readonly Point SendInvitationButtonWithoutEmailPointBigScreen = new Point(1500, 940);
+        private readonly Point SendInvitationButtonWithEmailPointBigScreen = new Point(1500, 990);
         private readonly Point DirectMessageSubjectPointBigScreen = new Point(1460, 800);
         private readonly Point RecruiterNameFromBelowPicturePointBigScreen = new Point(170, 620);
         private readonly Point RecruiterNameFromDirectMessageContentPointBigScreen = new Point(1490, 850);
@@ -40,9 +52,15 @@ namespace LeadGenApp.viewmodels
         private Point IsFreeToOpenProfileTextPoint => IsSmallScreenChecked ? IsFreeToOpenProfileTextPointSmallScreen : IsFreeToOpenProfileTextPointBigScreen;
         private Point ThreeDotsButtonPoint => IsSmallScreenChecked ? ThreeDotsButtonPointSmallScreen : ThreeDotsButtonPointBigScreen;
         private Point ConnectSubItemPoint => IsSmallScreenChecked ? ConnectSubItemPointSmallScreen : ConnectSubItemPointBigScreen;
-        private Point RecruiterNameFromEditableInvitationBoxPoint => IsSmallScreenChecked ? RecruiterNameFromEditableInvitationBoxPointSmallScreen : RecruiterNameFromEditableInvitationBoxPointBigScreen;
-        private Point RecruiterNameFromStaticInvitationBoxPoint => IsSmallScreenChecked ? RecruiterNameFromStaticInvitationBoxPointSmallScreen : RecruiterNameFromStaticInvitationBoxPointBigScreen;
-        private Point SendInvitationButtonPoint => IsSmallScreenChecked ? SendInvitationButtonPointSmallScreen : SendInvitationButtonPointBigScreen;
+        private Point EmailRequiredInInvitationBoxPoint => IsSmallScreenChecked ? EmailRequiredInInvitationBoxPointSmallScreen : EmailRequiredInInvitationBoxPointBigScreen;
+        private Point EmailAddressInInvitationBoxPoint => IsSmallScreenChecked ? EmailAddressInInvitationBoxPointSmallScreen : EmailAddressInInvitationBoxPointBigScreen;
+
+        private Point RecruiterNameFromEditableInvitationBoxWithoutEmailPoint => IsSmallScreenChecked ? RecruiterNameFromEditableInvitationBoxWithoutEmailPointSmallScreen : RecruiterNameFromEditableInvitationBoxWithoutEmailPointBigScreen;
+        private Point RecruiterNameFromStaticInvitationBoxWithoutEmailPoint => IsSmallScreenChecked ? RecruiterNameFromStaticInvitationBoxWithoutEmailPointSmallScreen : RecruiterNameFromStaticInvitationBoxWithoutEmailPointBigScreen;
+        private Point RecruiterNameFromEditableInvitationBoxWithEmailPoint => IsSmallScreenChecked ? RecruiterNameFromEditableInvitationBoxWithEmailPointSmallScreen : RecruiterNameFromEditableInvitationBoxWithEmailPointBigScreen;
+        private Point RecruiterNameFromStaticInvitationBoxWithEmailPoint => IsSmallScreenChecked ? RecruiterNameFromStaticInvitationBoxWithEmailPointSmallScreen : RecruiterNameFromStaticInvitationBoxWithEmailPointBigScreen;
+        private Point SendInvitationButtonWithoutEmailPoint => IsSmallScreenChecked ? SendInvitationButtonWithoutEmailPointSmallScreen : SendInvitationButtonWithoutEmailPointBigScreen;
+        private Point SendInvitationButtonWithEmailPoint => IsSmallScreenChecked ? SendInvitationButtonWithEmailPointSmallScreen : SendInvitationButtonWithEmailPointBigScreen;
         private Point DirectMessageSubjectPoint => IsSmallScreenChecked ? DirectMessageSubjectPointSmallScreen : DirectMessageSubjectPointBigScreen;
         private Point RecruiterNameFromBelowPicturePoint => IsSmallScreenChecked ? RecruiterNameFromBelowPicturePointSmallScreen : RecruiterNameFromBelowPicturePointBigScreen;
         private Point RecruiterNameFromDirectMessageContentPoint => IsSmallScreenChecked ? RecruiterNameFromDirectMessageContentPointSmallScreen : RecruiterNameFromDirectMessageContentPointBigScreen;
@@ -54,6 +72,7 @@ namespace LeadGenApp.viewmodels
         private const string InvitationContent = "Hi Name,\r\n\r\nI am a C# .NET software engineer with 11 years of experience, currently working as a contractor/consultant and looking for a new project. If you are aware of any open job positions of this kind, I would appreciate it if you could let me know. :)\r\n\r\nBest regards.";
         private const string DirectMessageSubject = "C# .NET software developer looking for remote job";
         private const string DirectMessageContent = "Hi Name,\r\n\r\nI am a C# .NET software engineer with 11 years of experience, currently working as a contractor/consultant and looking for a new project. If you are aware of any open job positions of this kind, I would appreciate it if you could let me know. :)\r\n\r\nBest regards,";
+        private const string EmailAddress = "szabolcs.antal.dev@gmail.com";
 
         private readonly InputSimulator _inputSimulator = new();
 
@@ -106,14 +125,36 @@ namespace LeadGenApp.viewmodels
         {
             ClickOnThreeDots();
             ClickOnConnect();
-            InsertInvitationContent();
-            CopyRecruiterNameFromInvitationBox();
-            ScrollUpInvitationText();
-            PasteRecruiterNameToInvitationBox();
+
+            var emailRequired = EmailRequiredOnInvitation();
+
+            InsertInvitationContent(emailRequired);
+            CopyRecruiterNameFromInvitationBox(emailRequired);
+            ScrollUpInvitationText(emailRequired);
+            PasteRecruiterNameToInvitationBox(emailRequired);
             DeleteLastCharacter();
-            ClickSendInvitation();
-            Thread.Sleep(LongDelay);
-            ChangeTab();
+
+            if (emailRequired)
+                PasteEmailAddressToInvitationBox();
+
+            if (IsTesting)
+            {
+                GoToSendInvitationForTesting(emailRequired);
+            }
+            else
+            {
+                ClickSendInvitation(emailRequired);
+                Thread.Sleep(LongDelay);
+                ChangeTab();
+            }
+        }
+
+        private bool EmailRequiredOnInvitation()
+        {
+            Clipboard.Clear();
+
+            CopyFrom(EmailRequiredInInvitationBoxPoint);
+            return !string.IsNullOrEmpty(Clipboard.GetText()); ;
         }
 
         private void SendDirectMessage()
@@ -124,9 +165,17 @@ namespace LeadGenApp.viewmodels
             CopyRecruiterNameFromBelowPicture();
             PasteRecruiterNameToDirectMessageContent();
             DeleteLastCharacter();
-            ClickSendDirectMessage();
-            Thread.Sleep(LongDelay);
-            ChangeTab();
+
+            if (IsTesting)
+            {
+                GoToSendDirectMessageForTesting();
+            }
+            else
+            {
+                ClickSendDirectMessage();
+                Thread.Sleep(LongDelay);
+                ChangeTab();
+            }
         }
 
         #region Common
@@ -136,6 +185,15 @@ namespace LeadGenApp.viewmodels
 
             Cursor.Position = point;
             _inputSimulator.Mouse.LeftButtonClick();
+
+            Thread.Sleep(ShortDelay);
+        }
+
+        private void GoToForTesting(Point point)
+        {
+            Thread.Sleep(ShortDelay);
+
+            Cursor.Position = point;
 
             Thread.Sleep(ShortDelay);
         }
@@ -231,7 +289,8 @@ namespace LeadGenApp.viewmodels
         {
             Thread.Sleep(ShortDelay);
 
-            User32Wrapper.KeyPress(User32Wrapper.BackspaceCode);
+            if (Clipboard.GetText().EndsWith(" "))
+                User32Wrapper.KeyPress(User32Wrapper.BackspaceCode);
 
             Thread.Sleep(ShortDelay);
         }
@@ -259,29 +318,58 @@ namespace LeadGenApp.viewmodels
             ClickTo(ConnectSubItemPoint);
         }
 
-        private void InsertInvitationContent()
+        private void InsertInvitationContent(bool emailRequired)
         {
-            PasteTo(RecruiterNameFromEditableInvitationBoxPoint, InvitationContent);
+            PasteTo(
+                emailRequired
+                    ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
+                    : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint,
+                InvitationContent);
         }
 
-        private void CopyRecruiterNameFromInvitationBox()
+        private void CopyRecruiterNameFromInvitationBox(bool emailRequired)
         {
-            CopyFrom(RecruiterNameFromStaticInvitationBoxPoint);
+            CopyFrom(
+                emailRequired
+                    ? RecruiterNameFromStaticInvitationBoxWithEmailPoint
+                    : RecruiterNameFromStaticInvitationBoxWithoutEmailPoint);
         }
 
-        private void ScrollUpInvitationText()
+        private void ScrollUpInvitationText(bool emailRequired)
         {
-            ScrollUpAt(RecruiterNameFromEditableInvitationBoxPoint);
+            ScrollUpAt(
+                emailRequired
+                    ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
+                    : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint);
         }
 
-        private void PasteRecruiterNameToInvitationBox()
+        private void PasteRecruiterNameToInvitationBox(bool emailRequired)
         {
-            PasteReplaceTo(RecruiterNameFromEditableInvitationBoxPoint);
+            PasteReplaceTo(
+                emailRequired
+                    ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
+                    : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint);
         }
 
-        private void ClickSendInvitation()
+        private void PasteEmailAddressToInvitationBox()
         {
-            ClickTo(SendInvitationButtonPoint);
+            PasteTo(EmailAddressInInvitationBoxPoint, EmailAddress);
+        }
+
+        private void ClickSendInvitation(bool emailRequired)
+        {
+            ClickTo(
+                emailRequired
+                    ? SendInvitationButtonWithEmailPoint
+                    : SendInvitationButtonWithoutEmailPoint);
+        }
+
+        private void GoToSendInvitationForTesting(bool emailRequired)
+        {
+            GoToForTesting(
+                emailRequired
+                    ? SendInvitationButtonWithEmailPoint
+                    : SendInvitationButtonWithoutEmailPoint);
         }
         #endregion Invitation
 
@@ -309,6 +397,11 @@ namespace LeadGenApp.viewmodels
         private void ClickSendDirectMessage()
         {
             ClickTo(SendDirectMessageButtonPoint);
+        }
+
+        private void GoToSendDirectMessageForTesting()
+        {
+            GoToForTesting(SendDirectMessageButtonPoint);
         }
         #endregion Direct Message
     }
