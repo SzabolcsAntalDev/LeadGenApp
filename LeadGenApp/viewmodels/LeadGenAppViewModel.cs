@@ -48,23 +48,23 @@ namespace LeadGenApp.viewmodels
         private readonly Point RecruiterNameFromDirectMessageContentPointBigScreen = new Point(1490, 850);
         private readonly Point SendDirectMessageButtonPointBigScreen = new Point(1940, 1325);
 
-        private Point MessageButtonPoint => IsSmallScreenChecked ? MessageButtonPointSmallScreen : MessageButtonPointBigScreen;
-        private Point IsFreeToOpenProfileTextPoint => IsSmallScreenChecked ? IsFreeToOpenProfileTextPointSmallScreen : IsFreeToOpenProfileTextPointBigScreen;
-        private Point ThreeDotsButtonPoint => IsSmallScreenChecked ? ThreeDotsButtonPointSmallScreen : ThreeDotsButtonPointBigScreen;
-        private Point ConnectSubItemPoint => IsSmallScreenChecked ? ConnectSubItemPointSmallScreen : ConnectSubItemPointBigScreen;
-        private Point EmailRequiredInInvitationBoxPoint => IsSmallScreenChecked ? EmailRequiredInInvitationBoxPointSmallScreen : EmailRequiredInInvitationBoxPointBigScreen;
-        private Point EmailAddressInInvitationBoxPoint => IsSmallScreenChecked ? EmailAddressInInvitationBoxPointSmallScreen : EmailAddressInInvitationBoxPointBigScreen;
+        private Point MessageButtonPoint => IsSmallScreenSelected ? MessageButtonPointSmallScreen : MessageButtonPointBigScreen;
+        private Point IsFreeToOpenProfileTextPoint => IsSmallScreenSelected ? IsFreeToOpenProfileTextPointSmallScreen : IsFreeToOpenProfileTextPointBigScreen;
+        private Point ThreeDotsButtonPoint => IsSmallScreenSelected ? ThreeDotsButtonPointSmallScreen : ThreeDotsButtonPointBigScreen;
+        private Point ConnectSubItemPoint => IsSmallScreenSelected ? ConnectSubItemPointSmallScreen : ConnectSubItemPointBigScreen;
+        private Point EmailRequiredInInvitationBoxPoint => IsSmallScreenSelected ? EmailRequiredInInvitationBoxPointSmallScreen : EmailRequiredInInvitationBoxPointBigScreen;
+        private Point EmailAddressInInvitationBoxPoint => IsSmallScreenSelected ? EmailAddressInInvitationBoxPointSmallScreen : EmailAddressInInvitationBoxPointBigScreen;
 
-        private Point RecruiterNameFromEditableInvitationBoxWithoutEmailPoint => IsSmallScreenChecked ? RecruiterNameFromEditableInvitationBoxWithoutEmailPointSmallScreen : RecruiterNameFromEditableInvitationBoxWithoutEmailPointBigScreen;
-        private Point RecruiterNameFromStaticInvitationBoxWithoutEmailPoint => IsSmallScreenChecked ? RecruiterNameFromStaticInvitationBoxWithoutEmailPointSmallScreen : RecruiterNameFromStaticInvitationBoxWithoutEmailPointBigScreen;
-        private Point RecruiterNameFromEditableInvitationBoxWithEmailPoint => IsSmallScreenChecked ? RecruiterNameFromEditableInvitationBoxWithEmailPointSmallScreen : RecruiterNameFromEditableInvitationBoxWithEmailPointBigScreen;
-        private Point RecruiterNameFromStaticInvitationBoxWithEmailPoint => IsSmallScreenChecked ? RecruiterNameFromStaticInvitationBoxWithEmailPointSmallScreen : RecruiterNameFromStaticInvitationBoxWithEmailPointBigScreen;
-        private Point SendInvitationButtonWithoutEmailPoint => IsSmallScreenChecked ? SendInvitationButtonWithoutEmailPointSmallScreen : SendInvitationButtonWithoutEmailPointBigScreen;
-        private Point SendInvitationButtonWithEmailPoint => IsSmallScreenChecked ? SendInvitationButtonWithEmailPointSmallScreen : SendInvitationButtonWithEmailPointBigScreen;
-        private Point DirectMessageSubjectPoint => IsSmallScreenChecked ? DirectMessageSubjectPointSmallScreen : DirectMessageSubjectPointBigScreen;
-        private Point RecruiterNameFromBelowPicturePoint => IsSmallScreenChecked ? RecruiterNameFromBelowPicturePointSmallScreen : RecruiterNameFromBelowPicturePointBigScreen;
-        private Point RecruiterNameFromDirectMessageContentPoint => IsSmallScreenChecked ? RecruiterNameFromDirectMessageContentPointSmallScreen : RecruiterNameFromDirectMessageContentPointBigScreen;
-        private Point SendDirectMessageButtonPoint => IsSmallScreenChecked ? SendDirectMessageButtonPointSmallScreen : SendDirectMessageButtonPointBigScreen;
+        private Point RecruiterNameFromEditableInvitationBoxWithoutEmailPoint => IsSmallScreenSelected ? RecruiterNameFromEditableInvitationBoxWithoutEmailPointSmallScreen : RecruiterNameFromEditableInvitationBoxWithoutEmailPointBigScreen;
+        private Point RecruiterNameFromStaticInvitationBoxWithoutEmailPoint => IsSmallScreenSelected ? RecruiterNameFromStaticInvitationBoxWithoutEmailPointSmallScreen : RecruiterNameFromStaticInvitationBoxWithoutEmailPointBigScreen;
+        private Point RecruiterNameFromEditableInvitationBoxWithEmailPoint => IsSmallScreenSelected ? RecruiterNameFromEditableInvitationBoxWithEmailPointSmallScreen : RecruiterNameFromEditableInvitationBoxWithEmailPointBigScreen;
+        private Point RecruiterNameFromStaticInvitationBoxWithEmailPoint => IsSmallScreenSelected ? RecruiterNameFromStaticInvitationBoxWithEmailPointSmallScreen : RecruiterNameFromStaticInvitationBoxWithEmailPointBigScreen;
+        private Point SendInvitationButtonWithoutEmailPoint => IsSmallScreenSelected ? SendInvitationButtonWithoutEmailPointSmallScreen : SendInvitationButtonWithoutEmailPointBigScreen;
+        private Point SendInvitationButtonWithEmailPoint => IsSmallScreenSelected ? SendInvitationButtonWithEmailPointSmallScreen : SendInvitationButtonWithEmailPointBigScreen;
+        private Point DirectMessageSubjectPoint => IsSmallScreenSelected ? DirectMessageSubjectPointSmallScreen : DirectMessageSubjectPointBigScreen;
+        private Point RecruiterNameFromBelowPicturePoint => IsSmallScreenSelected ? RecruiterNameFromBelowPicturePointSmallScreen : RecruiterNameFromBelowPicturePointBigScreen;
+        private Point RecruiterNameFromDirectMessageContentPoint => IsSmallScreenSelected ? RecruiterNameFromDirectMessageContentPointSmallScreen : RecruiterNameFromDirectMessageContentPointBigScreen;
+        private Point SendDirectMessageButtonPoint => IsSmallScreenSelected ? SendDirectMessageButtonPointSmallScreen : SendDirectMessageButtonPointBigScreen;
         #endregion Variables
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -78,9 +78,10 @@ namespace LeadGenApp.viewmodels
 
         private const int WaitBeforeActionStart = 3000;
         private const int ShortDelay = 200;
-        private const int LongDelay = 1500;
+        private const int LongDelay = 1000;
 
-        public bool IsSmallScreenChecked { get; set; } = false;
+        public bool IsSmallScreenSelected { get; set; }
+        public bool SendOnlyDirectMessages { get; set; }
 
         public int NumberOfTabsClickMessageButton { get; set; } = 1;
         public int NumberOfTabsConnect { get; set; } = 1;
@@ -115,9 +116,23 @@ namespace LeadGenApp.viewmodels
                 ClickMessageButton();
 
                 if (IsFreeToOpenProfile())
+                {
                     SendDirectMessage();
+                }
                 else
-                    SendInvitation();
+                {
+                    if (!SendOnlyDirectMessages)
+                    {
+                        SendInvitation();
+                    }
+                    else
+                    {
+                        if (!IsTesting)
+                        {
+                            ChangeTab();
+                        }
+                    }
+                }
             }
         }
 
@@ -298,6 +313,8 @@ namespace LeadGenApp.viewmodels
         private void ClickMessageButton()
         {
             ClickTo(MessageButtonPoint);
+
+            Thread.Sleep(LongDelay);
         }
 
         private bool IsFreeToOpenProfile()
