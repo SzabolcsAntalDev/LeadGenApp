@@ -83,9 +83,6 @@ namespace LeadGenApp.viewmodels
         public bool IsSmallScreenSelected { get; set; }
         public bool SendOnlyDirectMessages { get; set; }
 
-        public int NumberOfTabsClickMessageButton { get; set; } = 1;
-        public int NumberOfTabsConnect { get; set; } = 1;
-
         public ICommand ClickMessageButtonCommand { get; }
         public ICommand ConnectCommand { get; }
 
@@ -100,10 +97,17 @@ namespace LeadGenApp.viewmodels
         {
             Thread.Sleep(WaitBeforeActionStart);
 
-            for (int i = 0; i < NumberOfTabsClickMessageButton; i++)
+            while (true)
             {
+                if (IsEmptyTab())
+                    return;
+
                 ClickMessageButton();
-                ChangeTab();
+
+                if (IsTesting)
+                    return;
+                else
+                    ChangeTab();
             }
         }
 
@@ -111,8 +115,11 @@ namespace LeadGenApp.viewmodels
         {
             Thread.Sleep(WaitBeforeActionStart);
 
-            for (int i = 0; i < NumberOfTabsConnect; i++)
+            while (true)
             {
+                if (IsEmptyTab())
+                    return;
+
                 ClickMessageButton();
 
                 if (IsFreeToOpenProfile())
@@ -127,13 +134,23 @@ namespace LeadGenApp.viewmodels
                     }
                     else
                     {
-                        if (!IsTesting)
-                        {
+                        if (IsTesting)
+                            return;
+                        else
                             ChangeTab();
-                        }
                     }
                 }
+
+                if (IsTesting)
+                    return;
             }
+        }
+
+        private bool IsEmptyTab()
+        {
+            CopyFrom(RecruiterNameFromBelowPicturePoint);
+
+            return GetClipboardTextSafe() == Environment.NewLine;
         }
 
         private void SendInvitation()
@@ -162,14 +179,6 @@ namespace LeadGenApp.viewmodels
                 Thread.Sleep(LongDelay);
                 ChangeTab();
             }
-        }
-
-        private bool EmailRequiredOnInvitation()
-        {
-            Clipboard.Clear();
-
-            CopyFrom(EmailRequiredInInvitationBoxPoint);
-            return !string.IsNullOrEmpty(GetClipboardTextSafe()); ;
         }
 
         private void SendDirectMessage()
@@ -347,6 +356,14 @@ namespace LeadGenApp.viewmodels
         private void ClickOnConnect()
         {
             ClickTo(ConnectSubItemPoint);
+        }
+
+        private bool EmailRequiredOnInvitation()
+        {
+            Clipboard.Clear();
+
+            CopyFrom(EmailRequiredInInvitationBoxPoint);
+            return !string.IsNullOrEmpty(GetClipboardTextSafe()); ;
         }
 
         private void InsertInvitationContent(bool emailRequired)

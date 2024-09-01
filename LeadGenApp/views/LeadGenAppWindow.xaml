@@ -43,26 +43,19 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+            <StackPanel Grid.Row="0"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <RadioButton Grid.Row="0" Content="Small screen" GroupName="Options" IsChecked="{Binding IsSmallScreenSelected}" />
                 <RadioButton Grid.Row="0" Content="Big screen" GroupName="Options" IsChecked="True"/>
             </StackPanel>
 
-            <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Content="Send only direct messages" IsChecked="{Binding SendOnlyDirectMessages}"/>
+            <CheckBox Grid.Row="1" Content="Send only direct messages" IsChecked="{Binding SendOnlyDirectMessages}"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="nr. of tabs:" />
-            <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding NumberOfTabsClickMessageButton}" />
-            <Button    Grid.Row="2" Grid.Column="2" Content="click message button" Command="{Binding ClickMessageButtonCommand}" />
-
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="nr. of tabs:" />
-            <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding NumberOfTabsConnect}" />
-            <Button    Grid.Row="3" Grid.Column="2" Content="connect" Command="{Binding ConnectCommand}" />
+            <Button Grid.Row="2" Content="click message button" Command="{Binding ClickMessageButtonCommand}" />
+            <Button Grid.Row="3" Content="connect" Command="{Binding ConnectCommand}" />
         </Grid>
     </Grid>
 </Window>
