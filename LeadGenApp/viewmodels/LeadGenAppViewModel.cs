@@ -154,7 +154,7 @@ namespace LeadGenApp.viewmodels
             Clipboard.Clear();
 
             CopyFrom(EmailRequiredInInvitationBoxPoint);
-            return !string.IsNullOrEmpty(Clipboard.GetText()); ;
+            return !string.IsNullOrEmpty(GetClipboardTextSafe()); ;
         }
 
         private void SendDirectMessage()
@@ -285,11 +285,11 @@ namespace LeadGenApp.viewmodels
             Thread.Sleep(ShortDelay);
         }
 
-        private static void DeleteLastCharacter()
+        private void DeleteLastCharacter()
         {
             Thread.Sleep(ShortDelay);
 
-            if (Clipboard.GetText().EndsWith(" "))
+            if (GetClipboardTextSafe().EndsWith(" "))
                 User32Wrapper.KeyPress(User32Wrapper.BackspaceCode);
 
             Thread.Sleep(ShortDelay);
@@ -303,7 +303,21 @@ namespace LeadGenApp.viewmodels
         private bool IsFreeToOpenProfile()
         {
             CopyFrom(IsFreeToOpenProfileTextPoint);
-            return Clipboard.GetText() == "Free ";
+            return GetClipboardTextSafe() == "Free ";
+        }
+
+        private static string GetClipboardTextSafe()
+        {
+            try
+            {
+                return Clipboard.GetText();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot retrieve clipboard text." + Environment.NewLine + e.Message);
+                Environment.Exit(1);
+                return string.Empty;
+            }
         }
         #endregion Common
 
