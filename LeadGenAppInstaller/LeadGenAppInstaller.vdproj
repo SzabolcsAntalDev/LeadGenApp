@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0E043863A58F45109B5DE64C7CB3610B"
+        "MsmKey" = "8:_F5FC77A901BF4FB986E355C17A55D6E3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -43,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -59,6 +67,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -76,13 +92,23 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_57E5397FAD43431CA0C113A3030D3F48"
+                {
+                "Name" = "8:.NET Core"
+                "Message" = "8:[VSDNETCOREMSG]"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
+                "IsNETCore" = "11:TRUE"
+                "Architecture" = "2:0"
+                "Runtime" = "2:0"
+                }
             }
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E043863A58F45109B5DE64C7CB3610B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F5FC77A901BF4FB986E355C17A55D6E3"
             {
-            "SourcePath" = "8:C:\\Downloads\\LeadGenAppIcon.ico"
+            "SourcePath" = "8:LeadGenAppIcon.ico"
             "TargetName" = "8:LeadGenAppIcon.ico"
             "Tag" = "8:"
             "Folder" = "8:_BC390DDEF9AF4439AE1F7C9576F29492"
@@ -277,7 +303,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6EE16E1CF20A49719949A8F500E27D7D"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_84FF09DAD6494C3C86C50892AF8E42B5"
             {
             "Name" = "8:LeadGenApp"
             "Arguments" = "8:"
@@ -288,7 +314,7 @@
             "Target" = "8:_FAC32F5340354299B7B87BC61E46BAC7"
             "Folder" = "8:_59F47F6E70CC4389B55CCDAF3F3C543A"
             "WorkingFolder" = "8:_BC390DDEF9AF4439AE1F7C9576F29492"
-            "Icon" = "8:_0E043863A58F45109B5DE64C7CB3610B"
+            "Icon" = "8:_F5FC77A901BF4FB986E355C17A55D6E3"
             "Feature" = "8:"
             }
         }
