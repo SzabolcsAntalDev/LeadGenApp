@@ -189,7 +189,7 @@ namespace LeadGenApp.viewmodels
             Thread.Sleep(ShortDelay);
         }
 
-        private void GoToForTesting(Point point)
+        private static void GoToForTesting(Point point)
         {
             Thread.Sleep(ShortDelay);
 
@@ -285,7 +285,7 @@ namespace LeadGenApp.viewmodels
             Thread.Sleep(ShortDelay);
         }
 
-        private void DeleteLastCharacter()
+        private static void DeleteLastCharacter()
         {
             Thread.Sleep(ShortDelay);
 
