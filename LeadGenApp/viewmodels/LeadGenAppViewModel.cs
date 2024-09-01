@@ -14,10 +14,10 @@ namespace LeadGenApp.viewmodels
         #region Variables
         private readonly bool IsTesting = false;
 
-        private readonly Point MessageButtonPointSmallScreen = new Point(255, 575);
+        private readonly Point MessageButtonPointSmallScreen = new Point(255, 580);
         private readonly Point IsFreeToOpenProfileTextPointSmallScreen = new Point(1325, 530);
-        private readonly Point ThreeDotsButtonPointSmallScreen = new Point(350, 575);
-        private readonly Point ConnectSubItemPointSmallScreen = new Point(200, 645);
+        private readonly Point ThreeDotsButtonPointSmallScreen = new Point(348, 580);
+        private readonly Point ConnectSubItemPointSmallScreen = new Point(200, 640);
         private readonly Point EmailRequiredInInvitationBoxPointSmallScreen = new Point(715, 620);
         private readonly Point EmailAddressInInvitationBoxPointSmallScreen = new Point(720, 660);
         private readonly Point RecruiterNameFromEditableInvitationBoxWithoutEmailPointSmallScreen = new Point(750, 595);
@@ -31,9 +31,9 @@ namespace LeadGenApp.viewmodels
         private readonly Point RecruiterNameFromDirectMessageContentPointSmallScreen = new Point(1055, 610);
         private readonly Point SendDirectMessageButtonPointSmallScreen = new Point(1425, 990);
 
-        private readonly Point MessageButtonPointBigScreen = new Point(390, 720);
+        private readonly Point MessageButtonPointBigScreen = new Point(390, 724);
         private readonly Point IsFreeToOpenProfileTextPointBigScreen = new Point(1820, 755);
-        private readonly Point ThreeDotsButtonPointBigScreen = new Point(505, 720);
+        private readonly Point ThreeDotsButtonPointBigScreen = new Point(505, 724);
         private readonly Point ConnectSubItemPointBigScreen = new Point(310, 800);
         private readonly Point EmailRequiredInInvitationBoxPointBigScreen = new Point(970, 820);
         private readonly Point EmailAddressInInvitationBoxPointBigScreen = new Point(980, 870);
