@@ -13,12 +13,17 @@
         <Grid Margin="25">
             <Grid.Resources>
                 <Style TargetType="RadioButton">
-                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Margin" Value="10 20 10 10" />
                 </Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="Padding" Value="2" />
                     <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style TargetType="TextBlock" x:Key="ScreenInfoTextBlockStyle">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="Margin" Value="0 -10 0 10" />
+                    <Setter Property="FontSize" Value="9" />
                 </Style>
                 <Style TargetType="TextBox">
                     <Setter Property="Margin" Value="2 10" />
@@ -40,22 +45,52 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0"
+            <TextBlock Grid.Row="0"
+                       x:Name="InfoTextBlock"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="{Binding InfoText}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding WasTestedOnCurrentScreenSize}" Value="True">
+                                <Setter Property="Foreground" Value="LightGreen" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding WasTestedOnCurrentScreenSize}" Value="False">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <RadioButton Grid.Row="0" Content="Small screen" GroupName="Options" IsChecked="{Binding IsSmallScreenSelected}" />
-                <RadioButton Grid.Row="0" Content="Big screen" GroupName="Options" IsChecked="True"/>
+                <StackPanel>
+                    <RadioButton Grid.Row="0" Content="Small screen" GroupName="Options" IsChecked="{Binding IsSmallScreenSelected}" />
+                    <TextBlock Text="(1920x1080 x 100%)"
+                               Style="{StaticResource ScreenInfoTextBlockStyle}"/>
+                </StackPanel>
+                <StackPanel>
+                    <RadioButton Grid.Row="0" Content="Big screen" GroupName="Options" IsChecked="True"/>
+                    <TextBlock Text="(2560x1440 * 125%)"
+                               Style="{StaticResource ScreenInfoTextBlockStyle}"/>
+                </StackPanel>
             </StackPanel>
 
-            <CheckBox Grid.Row="1" Content="Send only direct messages" IsChecked="{Binding SendOnlyDirectMessages}"/>
-
             <Button Grid.Row="2" Content="click message button" Command="{Binding ClickMessageButtonCommand}" />
-            <Button Grid.Row="3" Content="connect" Command="{Binding ConnectCommand}" />
+            <Button Grid.Row="3" Content="send only direct messages to open profiles" Command="{Binding SendOnylDirectMessagesToOpenProfilesButtonCommand}" />
+            <Button Grid.Row="4" Content="send only direct messages to all profiles" Command="{Binding SendOnylDirectMessagesToAllProfilesButtonCommand}" />
+            <Button Grid.Row="5" Content="connect" Command="{Binding ConnectCommand}" />
         </Grid>
     </Grid>
 </Window>

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using LeadGenApp.common;
 using LeadGenApp.input;
 using WindowsInput;
+using Screen = System.Windows.Forms.Screen;
 using Cursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
 
@@ -69,6 +70,11 @@ namespace LeadGenApp.viewmodels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private const string InvitationContent = "Hi Name,\r\n\r\nI am a C# .NET software engineer with 11 years of experience, currently working as a contractor/consultant and looking for a new project. If you are aware of any open job positions of this kind, I would appreciate it if you could let me know. :)\r\n\r\nBest regards.";
         private const string DirectMessageSubject = "C# .NET software developer looking for remote job";
         private const string DirectMessageContent = "Hi Name,\r\n\r\nI am a C# .NET software engineer with 11 years of experience, currently working as a contractor/consultant and looking for a new project. If you are aware of any open job positions of this kind, I would appreciate it if you could let me know. :)\r\n\r\nBest regards,";
@@ -80,17 +86,76 @@ namespace LeadGenApp.viewmodels
         private const int ShortDelay = 200;
         private const int LongDelay = 1000;
 
-        public bool IsSmallScreenSelected { get; set; }
-        public bool SendOnlyDirectMessages { get; set; }
+        public string InfoText { get; set; }
+
+        private bool _wasTestedOnCurrentScreenSize;
+        public bool WasTestedOnCurrentScreenSize
+        {
+            get => _wasTestedOnCurrentScreenSize;
+            set
+            {
+                _wasTestedOnCurrentScreenSize = value;
+                OnPropertyChanged(nameof(_wasTestedOnCurrentScreenSize));
+            }
+        }
+
+        private bool _isSmallScreenSelected;
+        public bool IsSmallScreenSelected
+        {
+            get => _isSmallScreenSelected;
+            set
+            {
+                _isSmallScreenSelected = value;
+                OnPropertyChanged(nameof(IsSmallScreenSelected));
+            }
+        }
 
         public ICommand ClickMessageButtonCommand { get; }
+        public ICommand SendOnylDirectMessagesToOpenProfilesButtonCommand { get; }
+        public ICommand SendOnylDirectMessagesToAllProfilesButtonCommand { get; }
         public ICommand ConnectCommand { get; }
 
 
         public LeadGenAppViewModel()
         {
+            SetupInfoText();
+
             ClickMessageButtonCommand = new RelayCommand(_ => ExecuteClickMessageButtonCommand());
+            SendOnylDirectMessagesToOpenProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnylDirectMessagesToOpenProfilesButtonCommand());
+            SendOnylDirectMessagesToAllProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnylDirectMessagesToAllProfilesButtonCommand());
             ConnectCommand = new RelayCommand(_ => ExecuteConnectCommand());
+        }
+
+        private void SetupInfoText()
+        {
+            var width = Screen.PrimaryScreen.Bounds.Width ;
+            var height = Screen.PrimaryScreen.Bounds.Height;
+            var text = $"Current screen resolution is {width}x{height}." + Environment.NewLine;
+
+            if (width == 1920 && height == 1080)
+            {
+                text += "The app works well if Scale is set to 100%.";
+                IsSmallScreenSelected = true;
+                WasTestedOnCurrentScreenSize = true;
+            }
+            else if (width == 2560 && height == 1440)
+            {
+                text += "The app works well if Scale is set to 125%.";
+                IsSmallScreenSelected = false;
+                WasTestedOnCurrentScreenSize = true;
+            }
+            else
+            {
+                text +=
+                    "The app will probably not work well on this resolution." + Environment.NewLine +
+                    "It works well on:" + Environment.NewLine +
+                    "1920x1080 with Scaling 100%" + Environment.NewLine +
+                    "2560x1440 with Scaling 125%";
+
+                IsSmallScreenSelected = true;
+            }
+
+            InfoText = text;
         }
 
         private void ExecuteClickMessageButtonCommand()
@@ -111,6 +176,46 @@ namespace LeadGenApp.viewmodels
             }
         }
 
+        private void ExecuteSendOnylDirectMessagesToOpenProfilesButtonCommand()
+        {
+            Thread.Sleep(WaitBeforeActionStart);
+
+            while (true)
+            {
+                if (IsEmptyTab())
+                    return;
+
+                ClickMessageButton();
+
+                if (IsFreeToOpenProfile())
+                    SendDirectMessage();
+
+                if (IsTesting)
+                    return;
+                else
+                    ChangeTab();
+            }
+        }
+
+        private void ExecuteSendOnylDirectMessagesToAllProfilesButtonCommand()
+        {
+            Thread.Sleep(WaitBeforeActionStart);
+
+            while (true)
+            {
+                if (IsEmptyTab())
+                    return;
+
+                ClickMessageButton();
+                SendDirectMessage();
+
+                if (IsTesting)
+                    return;
+                else
+                    ChangeTab();
+            }
+        }
+
         private void ExecuteConnectCommand()
         {
             Thread.Sleep(WaitBeforeActionStart);
@@ -123,26 +228,14 @@ namespace LeadGenApp.viewmodels
                 ClickMessageButton();
 
                 if (IsFreeToOpenProfile())
-                {
                     SendDirectMessage();
-                }
                 else
-                {
-                    if (!SendOnlyDirectMessages)
-                    {
-                        SendInvitation();
-                    }
-                    else
-                    {
-                        if (IsTesting)
-                            return;
-                        else
-                            ChangeTab();
-                    }
-                }
+                    SendInvitation();
 
                 if (IsTesting)
                     return;
+                else
+                    ChangeTab();
             }
         }
 
@@ -177,7 +270,6 @@ namespace LeadGenApp.viewmodels
             {
                 ClickSendInvitation(emailRequired);
                 Thread.Sleep(LongDelay);
-                ChangeTab();
             }
         }
 
@@ -198,7 +290,6 @@ namespace LeadGenApp.viewmodels
             {
                 ClickSendDirectMessage();
                 Thread.Sleep(LongDelay);
-                ChangeTab();
             }
         }
 
