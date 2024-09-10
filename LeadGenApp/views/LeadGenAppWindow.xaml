@@ -48,6 +48,8 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -72,25 +74,28 @@
                 </TextBlock.Style>
             </TextBlock>
 
-            <StackPanel Grid.Row="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                <StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center">
                     <RadioButton Grid.Row="0" Content="Small screen" GroupName="Options" IsChecked="{Binding IsSmallScreenSelected}" />
                     <TextBlock Text="(1920x1080 x 100%)"
                                Style="{StaticResource ScreenInfoTextBlockStyle}"/>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
                     <RadioButton Grid.Row="0" Content="Big screen" GroupName="Options" IsChecked="True"/>
                     <TextBlock Text="(2560x1440 * 125%)"
                                Style="{StaticResource ScreenInfoTextBlockStyle}"/>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
 
-            <Button Grid.Row="2" Content="click message button" Command="{Binding ClickMessageButtonCommand}" />
-            <Button Grid.Row="3" Content="send only direct messages to open profiles" Command="{Binding SendOnylDirectMessagesToOpenProfilesButtonCommand}" />
-            <Button Grid.Row="4" Content="send only direct messages to all profiles" Command="{Binding SendOnylDirectMessagesToAllProfilesButtonCommand}" />
-            <Button Grid.Row="5" Content="connect" Command="{Binding ConnectCommand}" />
+            <Button Grid.Row="2" Content="send only direct messages to open profiles" Command="{Binding SendOnylDirectMessagesToOpenProfilesButtonCommand}" />
+            <Button Grid.Row="3" Content="send only direct messages to all profiles" Command="{Binding SendOnylDirectMessagesToAllProfilesButtonCommand}" />
+            <Button Grid.Row="4" Content="connect" Command="{Binding ConnectCommand}" />
+            <Separator Grid.Row="5" />
+            <Button Grid.Row="6" Content="extract data" Command="{Binding ExtractDataCommand}" />
         </Grid>
     </Grid>
 </Window>

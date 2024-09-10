@@ -10,6 +10,7 @@ namespace LeadGenApp.input
         public const int AltCode = 0x12;
         public const int ControlCode = 0x11;
         public const int TabCode = 0x09;
+        public const int EnterCode = 0x0D;
 
         public const int BackspaceCode = 0x08;
 

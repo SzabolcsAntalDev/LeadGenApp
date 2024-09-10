@@ -1,12 +1,14 @@
-﻿using System.ComponentModel;
+﻿using LeadGenApp.common;
+using LeadGenApp.helpers;
+using LeadGenApp.input;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using LeadGenApp.common;
-using LeadGenApp.input;
 using WindowsInput;
-using Screen = System.Windows.Forms.Screen;
-using Cursor = System.Windows.Forms.Cursor;
 using Point = System.Drawing.Point;
+using Screen = System.Windows.Forms.Screen;
+using Keys = System.Windows.Forms.Keys;
+using MessageBox = System.Windows.MessageBox;
 
 namespace LeadGenApp.viewmodels
 {
@@ -31,6 +33,13 @@ namespace LeadGenApp.viewmodels
         private readonly Point RecruiterNameFromBelowPicturePointSmallScreen = new Point(70, 500);
         private readonly Point RecruiterNameFromDirectMessageContentPointSmallScreen = new Point(1055, 610);
         private readonly Point SendDirectMessageButtonPointSmallScreen = new Point(1425, 990);
+        private readonly Point EndOfNotepadPointSmallScreen = new Point(1425, 990); // Szabi
+        private readonly Point CopyLinkedinUrlTopButtonPointSmallScreen = new Point(2300, 1200); // Szabi
+        private readonly Point CopyLinkedinUrlBottomButtonPointSmallScreen = new Point(2300, 1200); // Szabi
+        private readonly Point BrowsersHyperlinkPointSmallScreen = new Point(2300, 1200); // Szabi
+        private readonly Point CurrentRoleTextOnBottomPointSmallScreen = new Point(2300, 1200); // Szabi
+        private readonly Point RoleAtCompanyTopTextPointSmallScreen = new Point(2300, 1200); // Szabi
+        private readonly Point RoleAtCompanyBottomTextPointSmallScreen = new Point(2300, 1200); // Szabi
 
         private readonly Point MessageButtonPointBigScreen = new Point(390, 724);
         private readonly Point IsFreeToOpenProfileTextPointBigScreen = new Point(1820, 755);
@@ -48,6 +57,13 @@ namespace LeadGenApp.viewmodels
         private readonly Point RecruiterNameFromBelowPicturePointBigScreen = new Point(170, 620);
         private readonly Point RecruiterNameFromDirectMessageContentPointBigScreen = new Point(1490, 850);
         private readonly Point SendDirectMessageButtonPointBigScreen = new Point(1940, 1325);
+        private readonly Point EndOfNotepadPointBigScreen = new Point(2300, 1200);
+        private readonly Point CopyLinkedinUrlTopButtonPointBigScreen = new Point(310, 875);
+        private readonly Point CopyLinkedinUrlBottomButtonPointBigScreen = new Point(310, 920);
+        private readonly Point BrowsersHyperlinkPointBigScreen = new Point(220, 75);
+        private readonly Point CurrentRoleTextOnBottomPointBigScreen = new Point(170, 840);
+        private readonly Point RoleAtCompanyTopTextPointBigScreen = new Point(220, 860);
+        private readonly Point RoleAtCompanyBottomTextPointBigScreen = new Point(220, 920);
 
         private Point MessageButtonPoint => IsSmallScreenSelected ? MessageButtonPointSmallScreen : MessageButtonPointBigScreen;
         private Point IsFreeToOpenProfileTextPoint => IsSmallScreenSelected ? IsFreeToOpenProfileTextPointSmallScreen : IsFreeToOpenProfileTextPointBigScreen;
@@ -65,7 +81,16 @@ namespace LeadGenApp.viewmodels
         private Point DirectMessageSubjectPoint => IsSmallScreenSelected ? DirectMessageSubjectPointSmallScreen : DirectMessageSubjectPointBigScreen;
         private Point RecruiterNameFromBelowPicturePoint => IsSmallScreenSelected ? RecruiterNameFromBelowPicturePointSmallScreen : RecruiterNameFromBelowPicturePointBigScreen;
         private Point RecruiterNameFromDirectMessageContentPoint => IsSmallScreenSelected ? RecruiterNameFromDirectMessageContentPointSmallScreen : RecruiterNameFromDirectMessageContentPointBigScreen;
+
         private Point SendDirectMessageButtonPoint => IsSmallScreenSelected ? SendDirectMessageButtonPointSmallScreen : SendDirectMessageButtonPointBigScreen;
+        private Point EndOfNotepadPoint => IsSmallScreenSelected ? EndOfNotepadPointSmallScreen : EndOfNotepadPointBigScreen;
+        private Point CopyLinkedinUrlTopButtonPoint => IsSmallScreenSelected ? CopyLinkedinUrlTopButtonPointSmallScreen : CopyLinkedinUrlTopButtonPointBigScreen;
+        private Point CopyLinkedinUrlBottomButtonPoint => IsSmallScreenSelected ? CopyLinkedinUrlBottomButtonPointSmallScreen : CopyLinkedinUrlBottomButtonPointBigScreen;
+        private Point BrowsersHyperlinkPoint => IsSmallScreenSelected ? BrowsersHyperlinkPointSmallScreen : BrowsersHyperlinkPointBigScreen;
+        private Point CurrentRoleTextOnBottomPoint => IsSmallScreenSelected ? CurrentRoleTextOnBottomPointSmallScreen : CurrentRoleTextOnBottomPointBigScreen;
+        private Point RoleAtCompanyTopTextPointScreen => IsSmallScreenSelected ? RoleAtCompanyTopTextPointSmallScreen : RoleAtCompanyTopTextPointBigScreen;
+        private Point RoleAtCompanyBottomTextPointScreen => IsSmallScreenSelected ? RoleAtCompanyBottomTextPointSmallScreen : RoleAtCompanyBottomTextPointBigScreen;
+
         #endregion Variables
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -82,8 +107,7 @@ namespace LeadGenApp.viewmodels
 
         private readonly InputSimulator _inputSimulator = new();
 
-        private const int WaitBeforeActionStart = 3000;
-        private const int ShortDelay = 200;
+        private const int WaitBeforeActionStart = 4000;
         private const int LongDelay = 1000;
 
         public string InfoText { get; set; }
@@ -110,25 +134,25 @@ namespace LeadGenApp.viewmodels
             }
         }
 
-        public ICommand ClickMessageButtonCommand { get; }
         public ICommand SendOnylDirectMessagesToOpenProfilesButtonCommand { get; }
         public ICommand SendOnylDirectMessagesToAllProfilesButtonCommand { get; }
         public ICommand ConnectCommand { get; }
-
+        public ICommand ExtractDataCommand { get; }
 
         public LeadGenAppViewModel()
         {
             SetupInfoText();
 
-            ClickMessageButtonCommand = new RelayCommand(_ => ExecuteClickMessageButtonCommand());
             SendOnylDirectMessagesToOpenProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnylDirectMessagesToOpenProfilesButtonCommand());
             SendOnylDirectMessagesToAllProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnylDirectMessagesToAllProfilesButtonCommand());
             ConnectCommand = new RelayCommand(_ => ExecuteConnectCommand());
+            ExtractDataCommand = new RelayCommand(_ => ExecuteExtractDataCommand());
         }
 
+        #region Main
         private void SetupInfoText()
         {
-            var width = Screen.PrimaryScreen.Bounds.Width ;
+            var width = Screen.PrimaryScreen.Bounds.Width;
             var height = Screen.PrimaryScreen.Bounds.Height;
             var text = $"Current screen resolution is {width}x{height}." + Environment.NewLine;
 
@@ -158,24 +182,6 @@ namespace LeadGenApp.viewmodels
             InfoText = text;
         }
 
-        private void ExecuteClickMessageButtonCommand()
-        {
-            Thread.Sleep(WaitBeforeActionStart);
-
-            while (true)
-            {
-                if (IsEmptyTab())
-                    return;
-
-                ClickMessageButton();
-
-                if (IsTesting)
-                    return;
-                else
-                    ChangeTab();
-            }
-        }
-
         private void ExecuteSendOnylDirectMessagesToOpenProfilesButtonCommand()
         {
             Thread.Sleep(WaitBeforeActionStart);
@@ -185,7 +191,7 @@ namespace LeadGenApp.viewmodels
                 if (IsEmptyTab())
                     return;
 
-                ClickMessageButton();
+                ClickOnMessageButton();
 
                 if (IsFreeToOpenProfile())
                     SendDirectMessage();
@@ -193,7 +199,7 @@ namespace LeadGenApp.viewmodels
                 if (IsTesting)
                     return;
                 else
-                    ChangeTab();
+                    UserActions.ControlTab();
             }
         }
 
@@ -206,13 +212,13 @@ namespace LeadGenApp.viewmodels
                 if (IsEmptyTab())
                     return;
 
-                ClickMessageButton();
+                ClickOnMessageButton();
                 SendDirectMessage();
 
                 if (IsTesting)
                     return;
                 else
-                    ChangeTab();
+                    UserActions.ControlTab();
             }
         }
 
@@ -225,7 +231,7 @@ namespace LeadGenApp.viewmodels
                 if (IsEmptyTab())
                     return;
 
-                ClickMessageButton();
+                ClickOnMessageButton();
 
                 if (IsFreeToOpenProfile())
                     SendDirectMessage();
@@ -235,29 +241,75 @@ namespace LeadGenApp.viewmodels
                 if (IsTesting)
                     return;
                 else
-                    ChangeTab();
+                    UserActions.ControlTab();
+            }
+        }
+
+        private void ExecuteExtractDataCommand()
+        {
+            Thread.Sleep(WaitBeforeActionStart);
+
+            while (true)
+            {
+                if (IsEmptyTab())
+                    return;
+
+                CopyRecruiterFullNameFromBelowPicture();
+                UserActions.AltTab();
+                PasteToEndOfNotepad();
+                UserActions.PressBackspace();
+                UserActions.PressTab();
+                UserActions.AltTab();
+
+                // copy linkedin profile link
+                ClickOnThreeDotsButton();
+                ClickOnCopyLinkedinUrlButton();
+                UserActions.AltTab();
+                PasteToEndOfNotepad();
+                UserActions.PressTab();
+                UserActions.AltTab();
+
+                // copy sales nav link
+                CopyHyperlinkFromBrowser();
+                UserActions.AltTab();
+                PasteToEndOfNotepad();
+                UserActions.PressTab();
+                UserActions.AltTab();
+
+                // copy company
+                CopyCompanyNameFromCurrentRoleText();
+                UserActions.AltTab();
+                PasteToEndOfNotepad();
+                UserActions.PressBackspace();
+                UserActions.PressEnter();
+                UserActions.AltTab();
+
+                if (IsTesting)
+                    return;
+                else
+                    UserActions.ControlTab();
             }
         }
 
         private bool IsEmptyTab()
         {
-            CopyFrom(RecruiterNameFromBelowPicturePoint);
+            UserActions.CopyFromWithDoubleClick(RecruiterNameFromBelowPicturePoint);
 
-            return GetClipboardTextSafe() == Environment.NewLine;
+            return UserActions.GetClipboardTextSafe() == Environment.NewLine;
         }
 
         private void SendInvitation()
         {
-            ClickOnThreeDots();
-            ClickOnConnect();
+            ClickOnThreeDotsButton();
+            ClickOnConnectButton();
 
-            var emailRequired = EmailRequiredOnInvitation();
+            var emailRequired = IsEmailRequiredOnInvitation();
 
-            InsertInvitationContent(emailRequired);
+            PasteInvitationContentToEditableInvitationBox(emailRequired);
             CopyRecruiterNameFromInvitationBox(emailRequired);
             ScrollUpInvitationText(emailRequired);
-            PasteRecruiterNameToInvitationBox(emailRequired);
-            DeleteLastCharacter();
+            PasteReplaceToRecruiterNameFromEditableInvitationBox(emailRequired);
+            UserActions.DeleteLastCharacterFromClipboardIfEndsWithSpace();
 
             if (emailRequired)
                 PasteEmailAddressToInvitationBox();
@@ -268,19 +320,19 @@ namespace LeadGenApp.viewmodels
             }
             else
             {
-                ClickSendInvitation(emailRequired);
+                ClickSendInvitationButton(emailRequired);
                 Thread.Sleep(LongDelay);
             }
         }
 
         private void SendDirectMessage()
         {
-            ClickMessageButton();
-            InsertDirectMessageSubject();
-            InsertDirectMessageContent();
-            CopyRecruiterNameFromBelowPicture();
-            PasteRecruiterNameToDirectMessageContent();
-            DeleteLastCharacter();
+            ClickOnMessageButton();
+            PasteDirectMessageSubjectToDirectMessageSubject();
+            PasteDirectMessageToDirectMessageContent();
+            CopyRecruiterFirstNameFromBelowPicture();
+            PasteReplaceToRecruiterNameFromDirectMessageContent();
+            UserActions.DeleteLastCharacterFromClipboardIfEndsWithSpace();
 
             if (IsTesting)
             {
@@ -288,203 +340,164 @@ namespace LeadGenApp.viewmodels
             }
             else
             {
-                ClickSendDirectMessage();
+                ClickOnSendDirectMessageButton();
                 Thread.Sleep(LongDelay);
             }
         }
+        #endregion Main
 
-        #region Common
-        private void ClickTo(Point point)
+        #region Testing
+        private void GoToSendInvitationForTesting(bool emailRequired)
         {
-            Thread.Sleep(ShortDelay);
-
-            Cursor.Position = point;
-            _inputSimulator.Mouse.LeftButtonClick();
-
-            Thread.Sleep(ShortDelay);
+            UserActions.GoToForTesting(
+                emailRequired
+                    ? SendInvitationButtonWithEmailPoint
+                    : SendInvitationButtonWithoutEmailPoint);
         }
 
-        private static void GoToForTesting(Point point)
+        private void GoToSendDirectMessageForTesting()
         {
-            Thread.Sleep(ShortDelay);
+            UserActions.GoToForTesting(SendDirectMessageButtonPoint);
+        }
+        #endregion Testing
 
-            Cursor.Position = point;
-
-            Thread.Sleep(ShortDelay);
+        #region Boolean
+        private bool IsFreeToOpenProfile()
+        {
+            UserActions.CopyFromWithDoubleClick(IsFreeToOpenProfileTextPoint);
+            return UserActions.GetClipboardTextSafe() == "Free ";
         }
 
-        private static void ChangeTab()
+        private bool IsEmailRequiredOnInvitation()
         {
-            Thread.Sleep(ShortDelay);
+            Clipboard.Clear();
 
-            User32Wrapper.KeyDown(User32Wrapper.ControlCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyPress(User32Wrapper.TabCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyUp(User32Wrapper.ControlCode);
-
-            Thread.Sleep(ShortDelay);
+            UserActions.CopyFromWithDoubleClick(EmailRequiredInInvitationBoxPoint);
+            return !string.IsNullOrEmpty(UserActions.GetClipboardTextSafe());
         }
 
-        private void CopyFrom(Point point)
+        private bool CurrentPositionIsOnBottom()
         {
-            Thread.Sleep(ShortDelay);
+            Clipboard.Clear();
 
-            var cursorPosition = point;
-
-            Thread.Sleep(ShortDelay);
-
-            Cursor.Position = cursorPosition;
-            _inputSimulator.Mouse.LeftButtonClick();
-            _inputSimulator.Mouse.LeftButtonClick();
-
-            User32Wrapper.KeyDown(User32Wrapper.ControlCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyPress(User32Wrapper.CCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyUp(User32Wrapper.ControlCode);
-
-            Thread.Sleep(ShortDelay);
+            UserActions.CopyFromWithDoubleClick(CurrentRoleTextOnBottomPoint);
+            return UserActions.GetClipboardTextSafe() == "Current ";
         }
+        #endregion Boolean
 
-        private void PasteTo(Point point, string text)
+        #region Click
+        private void ClickOnMessageButton()
         {
-            Thread.Sleep(ShortDelay);
-
-            Cursor.Position = point;
-
-            Thread.Sleep(ShortDelay);
-            _inputSimulator.Mouse.LeftButtonClick();
-
-            Clipboard.SetText(text);
-
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyDown(User32Wrapper.ControlCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyPress(User32Wrapper.VCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyUp(User32Wrapper.ControlCode);
-
-            Thread.Sleep(ShortDelay);
-        }
-
-        private void PasteReplaceTo(Point point)
-        {
-            Thread.Sleep(ShortDelay);
-
-            Cursor.Position = point;
-            Thread.Sleep(ShortDelay);
-            _inputSimulator.Mouse.LeftButtonClick();
-            _inputSimulator.Mouse.LeftButtonClick();
-
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyDown(User32Wrapper.ControlCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyPress(User32Wrapper.VCode);
-            Thread.Sleep(ShortDelay);
-            User32Wrapper.KeyUp(User32Wrapper.ControlCode);
-
-            Thread.Sleep(ShortDelay);
-        }
-
-        private void ScrollUpAt(Point point)
-        {
-            Thread.Sleep(ShortDelay);
-
-            Cursor.Position = point;
-            Thread.Sleep(ShortDelay);
-            _inputSimulator.Mouse.LeftButtonClick();
-            Thread.Sleep(ShortDelay);
-            _inputSimulator.Mouse.VerticalScroll(3);
-
-            Thread.Sleep(ShortDelay);
-        }
-
-        private static void DeleteLastCharacter()
-        {
-            Thread.Sleep(ShortDelay);
-
-            if (GetClipboardTextSafe().EndsWith(" "))
-                User32Wrapper.KeyPress(User32Wrapper.BackspaceCode);
-
-            Thread.Sleep(ShortDelay);
-        }
-
-        private void ClickMessageButton()
-        {
-            ClickTo(MessageButtonPoint);
+            UserActions.ClickTo(MessageButtonPoint);
 
             Thread.Sleep(LongDelay);
         }
 
-        private bool IsFreeToOpenProfile()
+        private void ClickOnThreeDotsButton()
         {
-            CopyFrom(IsFreeToOpenProfileTextPoint);
-            return GetClipboardTextSafe() == "Free ";
+            UserActions.ClickTo(ThreeDotsButtonPoint);
         }
 
-        private static string GetClipboardTextSafe()
+        private void ClickOnConnectButton()
         {
-            try
-            {
-                return Clipboard.GetText();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Cannot retrieve clipboard text." + Environment.NewLine + e.Message);
-                Environment.Exit(1);
-                return string.Empty;
-            }
-        }
-        #endregion Common
-
-        #region Invitation
-        private void ClickOnThreeDots()
-        {
-            ClickTo(ThreeDotsButtonPoint);
+            UserActions.ClickTo(ConnectSubItemPoint);
         }
 
-        private void ClickOnConnect()
+        private void ClickSendInvitationButton(bool emailRequired)
         {
-            ClickTo(ConnectSubItemPoint);
+            UserActions.ClickTo(
+                emailRequired
+                    ? SendInvitationButtonWithEmailPoint
+                    : SendInvitationButtonWithoutEmailPoint);
         }
 
-        private bool EmailRequiredOnInvitation()
+        private void ClickOnCopyLinkedinUrlButton()
         {
             Clipboard.Clear();
 
-            CopyFrom(EmailRequiredInInvitationBoxPoint);
-            return !string.IsNullOrEmpty(GetClipboardTextSafe()); ;
+            UserActions.ClickTo(CopyLinkedinUrlBottomButtonPoint);
+
+            // have to paste empty somehwere otherwise getting text of clipboard fails
+            UserActions.PasteTo(CopyLinkedinUrlBottomButtonPoint);
+
+            if (string.IsNullOrEmpty(UserActions.GetClipboardTextSafe()))
+                UserActions.ClickTo(CopyLinkedinUrlTopButtonPoint);
         }
 
-        private void InsertInvitationContent(bool emailRequired)
+        private void ClickOnSendDirectMessageButton()
         {
-            PasteTo(
+            UserActions.ClickTo(SendDirectMessageButtonPoint);
+        }
+        #endregion Click
+
+        #region Scroll
+        private void ScrollUpInvitationText(bool emailRequired)
+        {
+            UserActions.ScrollUpAt(
+                emailRequired
+                    ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
+                    : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint);
+        }
+        #endregion Scroll
+
+        #region Copy
+        private void CopyRecruiterNameFromInvitationBox(bool emailRequired)
+        {
+            UserActions.CopyFromWithDoubleClick(
+                emailRequired
+                    ? RecruiterNameFromStaticInvitationBoxWithEmailPoint
+                    : RecruiterNameFromStaticInvitationBoxWithoutEmailPoint);
+        }
+
+        private void CopyRecruiterFirstNameFromBelowPicture()
+        {
+            UserActions.CopyFromWithDoubleClick(RecruiterNameFromBelowPicturePoint);
+        }
+
+        private void CopyRecruiterFullNameFromBelowPicture()
+        {
+            UserActions.CopyFromWithTripleClick(RecruiterNameFromBelowPicturePoint);
+        }
+
+        private void CopyHyperlinkFromBrowser()
+        {
+            UserActions.CopyFromWithSingleClick(BrowsersHyperlinkPoint);
+        }
+
+        private void CopyCompanyNameFromCurrentRoleText()
+        {
+            if (CurrentPositionIsOnBottom())
+                UserActions.CopyFromWithTripleClick(RoleAtCompanyBottomTextPointScreen);
+            else
+                UserActions.CopyFromWithTripleClick(RoleAtCompanyTopTextPointScreen);
+
+            Clipboard.SetText(GetCompanyNameFromRoleAtCompanyText(UserActions.GetClipboardTextSafe()));
+        }
+
+        private static string GetCompanyNameFromRoleAtCompanyText(string roleAtCompany)
+        {
+            string searchString = "at ";
+            int index = roleAtCompany.IndexOf(searchString);
+
+            return index == -1
+                ? string.Empty
+                : roleAtCompany.Substring(index + searchString.Length);
+        }
+        #endregion Copy
+
+        #region Paste
+        private void PasteInvitationContentToEditableInvitationBox(bool emailRequired)
+        {
+            UserActions.PasteTo(
                 emailRequired
                     ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
                     : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint,
                 InvitationContent);
         }
 
-        private void CopyRecruiterNameFromInvitationBox(bool emailRequired)
+        private void PasteReplaceToRecruiterNameFromEditableInvitationBox(bool emailRequired)
         {
-            CopyFrom(
-                emailRequired
-                    ? RecruiterNameFromStaticInvitationBoxWithEmailPoint
-                    : RecruiterNameFromStaticInvitationBoxWithoutEmailPoint);
-        }
-
-        private void ScrollUpInvitationText(bool emailRequired)
-        {
-            ScrollUpAt(
-                emailRequired
-                    ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
-                    : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint);
-        }
-
-        private void PasteRecruiterNameToInvitationBox(bool emailRequired)
-        {
-            PasteReplaceTo(
+            UserActions.PasteReplaceTo(
                 emailRequired
                     ? RecruiterNameFromEditableInvitationBoxWithEmailPoint
                     : RecruiterNameFromEditableInvitationBoxWithoutEmailPoint);
@@ -492,56 +505,28 @@ namespace LeadGenApp.viewmodels
 
         private void PasteEmailAddressToInvitationBox()
         {
-            PasteTo(EmailAddressInInvitationBoxPoint, EmailAddress);
+            UserActions.PasteTo(EmailAddressInInvitationBoxPoint, EmailAddress);
         }
 
-        private void ClickSendInvitation(bool emailRequired)
+        private void PasteDirectMessageSubjectToDirectMessageSubject()
         {
-            ClickTo(
-                emailRequired
-                    ? SendInvitationButtonWithEmailPoint
-                    : SendInvitationButtonWithoutEmailPoint);
+            UserActions.PasteTo(DirectMessageSubjectPoint, DirectMessageSubject);
         }
 
-        private void GoToSendInvitationForTesting(bool emailRequired)
+        private void PasteDirectMessageToDirectMessageContent()
         {
-            GoToForTesting(
-                emailRequired
-                    ? SendInvitationButtonWithEmailPoint
-                    : SendInvitationButtonWithoutEmailPoint);
-        }
-        #endregion Invitation
-
-        #region Direct Message
-        private void InsertDirectMessageSubject()
-        {
-            PasteTo(DirectMessageSubjectPoint, DirectMessageSubject);
+            UserActions.PasteTo(RecruiterNameFromDirectMessageContentPoint, DirectMessageContent);
         }
 
-        private void InsertDirectMessageContent()
+        private void PasteReplaceToRecruiterNameFromDirectMessageContent()
         {
-            PasteTo(RecruiterNameFromDirectMessageContentPoint, DirectMessageContent);
+            UserActions.PasteReplaceTo(RecruiterNameFromDirectMessageContentPoint);
         }
 
-        private void CopyRecruiterNameFromBelowPicture()
+        private void PasteToEndOfNotepad()
         {
-            CopyFrom(RecruiterNameFromBelowPicturePoint);
+            UserActions.PasteTo(EndOfNotepadPoint);
         }
-
-        private void PasteRecruiterNameToDirectMessageContent()
-        {
-            PasteReplaceTo(RecruiterNameFromDirectMessageContentPoint);
-        }
-
-        private void ClickSendDirectMessage()
-        {
-            ClickTo(SendDirectMessageButtonPoint);
-        }
-
-        private void GoToSendDirectMessageForTesting()
-        {
-            GoToForTesting(SendDirectMessageButtonPoint);
-        }
-        #endregion Direct Message
+        #endregion Paste
     }
 }
