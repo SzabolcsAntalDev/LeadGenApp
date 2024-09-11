@@ -7,8 +7,6 @@ using System.Windows.Input;
 using WindowsInput;
 using Point = System.Drawing.Point;
 using Screen = System.Windows.Forms.Screen;
-using Keys = System.Windows.Forms.Keys;
-using MessageBox = System.Windows.MessageBox;
 
 namespace LeadGenApp.viewmodels
 {
@@ -33,13 +31,13 @@ namespace LeadGenApp.viewmodels
         private readonly Point RecruiterNameFromBelowPicturePointSmallScreen = new Point(70, 500);
         private readonly Point RecruiterNameFromDirectMessageContentPointSmallScreen = new Point(1055, 610);
         private readonly Point SendDirectMessageButtonPointSmallScreen = new Point(1425, 990);
-        private readonly Point EndOfNotepadPointSmallScreen = new Point(1425, 990); // Szabi
-        private readonly Point CopyLinkedinUrlTopButtonPointSmallScreen = new Point(2300, 1200); // Szabi
-        private readonly Point CopyLinkedinUrlBottomButtonPointSmallScreen = new Point(2300, 1200); // Szabi
-        private readonly Point BrowsersHyperlinkPointSmallScreen = new Point(2300, 1200); // Szabi
-        private readonly Point CurrentRoleTextOnBottomPointSmallScreen = new Point(2300, 1200); // Szabi
-        private readonly Point RoleAtCompanyTopTextPointSmallScreen = new Point(2300, 1200); // Szabi
-        private readonly Point RoleAtCompanyBottomTextPointSmallScreen = new Point(2300, 1200); // Szabi
+        private readonly Point EndOfNotepadPointSmallScreen = new Point(1800, 900);
+        private readonly Point CopyLinkedinUrlTopButtonPointSmallScreen = new Point(200, 700);
+        private readonly Point CopyLinkedinUrlBottomButtonPointSmallScreen = new Point(200, 750);
+        private readonly Point BrowsersHyperlinkPointSmallScreen = new Point(170, 60);
+        private readonly Point CurrentRoleTextOnBottomPointSmallScreen = new Point(80, 650);
+        private readonly Point RoleAtCompanyTopTextPointSmallScreen = new Point(120, 690);
+        private readonly Point RoleAtCompanyBottomTextPointSmallScreen = new Point(120, 740);
 
         private readonly Point MessageButtonPointBigScreen = new Point(390, 724);
         private readonly Point IsFreeToOpenProfileTextPointBigScreen = new Point(1820, 755);
@@ -262,8 +260,7 @@ namespace LeadGenApp.viewmodels
                 UserActions.AltTab();
 
                 // copy linkedin profile link
-                ClickOnThreeDotsButton();
-                ClickOnCopyLinkedinUrlButton();
+                CopyLinkedinUrl();
                 UserActions.AltTab();
                 PasteToEndOfNotepad();
                 UserActions.PressTab();
@@ -411,17 +408,21 @@ namespace LeadGenApp.viewmodels
                     : SendInvitationButtonWithoutEmailPoint);
         }
 
-        private void ClickOnCopyLinkedinUrlButton()
+        private void CopyLinkedinUrl()
         {
             Clipboard.Clear();
 
+            ClickOnThreeDotsButton();
             UserActions.ClickTo(CopyLinkedinUrlBottomButtonPoint);
 
             // have to paste empty somehwere otherwise getting text of clipboard fails
             UserActions.PasteTo(CopyLinkedinUrlBottomButtonPoint);
 
             if (string.IsNullOrEmpty(UserActions.GetClipboardTextSafe()))
+            {
+                ClickOnThreeDotsButton();
                 UserActions.ClickTo(CopyLinkedinUrlTopButtonPoint);
+            }
         }
 
         private void ClickOnSendDirectMessageButton()
