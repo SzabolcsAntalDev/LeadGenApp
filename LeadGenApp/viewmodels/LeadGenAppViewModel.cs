@@ -35,7 +35,7 @@ namespace LeadGenApp.viewmodels
         private readonly Point CopyLinkedinUrlTopButtonPointSmallScreen = new Point(200, 700);
         private readonly Point CopyLinkedinUrlBottomButtonPointSmallScreen = new Point(200, 750);
         private readonly Point BrowsersHyperlinkPointSmallScreen = new Point(170, 60);
-        private readonly Point CurrentRoleTextOnBottomPointSmallScreen = new Point(80, 650);
+        private readonly Point CurrentRoleTextOnTopPointSmallScreen = new Point(80, 645);
         private readonly Point RoleAtCompanyTopTextPointSmallScreen = new Point(120, 690);
         private readonly Point RoleAtCompanyBottomTextPointSmallScreen = new Point(120, 740);
 
@@ -59,7 +59,7 @@ namespace LeadGenApp.viewmodels
         private readonly Point CopyLinkedinUrlTopButtonPointBigScreen = new Point(310, 875);
         private readonly Point CopyLinkedinUrlBottomButtonPointBigScreen = new Point(310, 920);
         private readonly Point BrowsersHyperlinkPointBigScreen = new Point(220, 75);
-        private readonly Point CurrentRoleTextOnBottomPointBigScreen = new Point(170, 840);
+        private readonly Point CurrentRoleTextOnTopPointBigScreen = new Point(170, 840); // Szabi
         private readonly Point RoleAtCompanyTopTextPointBigScreen = new Point(220, 860);
         private readonly Point RoleAtCompanyBottomTextPointBigScreen = new Point(220, 920);
 
@@ -85,9 +85,9 @@ namespace LeadGenApp.viewmodels
         private Point CopyLinkedinUrlTopButtonPoint => IsSmallScreenSelected ? CopyLinkedinUrlTopButtonPointSmallScreen : CopyLinkedinUrlTopButtonPointBigScreen;
         private Point CopyLinkedinUrlBottomButtonPoint => IsSmallScreenSelected ? CopyLinkedinUrlBottomButtonPointSmallScreen : CopyLinkedinUrlBottomButtonPointBigScreen;
         private Point BrowsersHyperlinkPoint => IsSmallScreenSelected ? BrowsersHyperlinkPointSmallScreen : BrowsersHyperlinkPointBigScreen;
-        private Point CurrentRoleTextOnBottomPoint => IsSmallScreenSelected ? CurrentRoleTextOnBottomPointSmallScreen : CurrentRoleTextOnBottomPointBigScreen;
-        private Point RoleAtCompanyTopTextPointScreen => IsSmallScreenSelected ? RoleAtCompanyTopTextPointSmallScreen : RoleAtCompanyTopTextPointBigScreen;
-        private Point RoleAtCompanyBottomTextPointScreen => IsSmallScreenSelected ? RoleAtCompanyBottomTextPointSmallScreen : RoleAtCompanyBottomTextPointBigScreen;
+        private Point CurrentRoleTextOnTopPoint => IsSmallScreenSelected ? CurrentRoleTextOnTopPointSmallScreen : CurrentRoleTextOnTopPointBigScreen;
+        private Point RoleAtCompanyTopTextPoint => IsSmallScreenSelected ? RoleAtCompanyTopTextPointSmallScreen : RoleAtCompanyTopTextPointBigScreen;
+        private Point RoleAtCompanyBottomTextPoint => IsSmallScreenSelected ? RoleAtCompanyBottomTextPointSmallScreen : RoleAtCompanyBottomTextPointBigScreen;
 
         #endregion Variables
 
@@ -373,11 +373,12 @@ namespace LeadGenApp.viewmodels
             return !string.IsNullOrEmpty(UserActions.GetClipboardTextSafe());
         }
 
-        private bool CurrentPositionIsOnBottom()
+        private bool CurrentPositionIsOnTop()
         {
             Clipboard.Clear();
 
-            UserActions.CopyFromWithDoubleClick(CurrentRoleTextOnBottomPoint);
+            // this point is a few pixels below the x mutual connections hyperlink when current role text is on bottom
+            UserActions.CopyFromWithDoubleClick(CurrentRoleTextOnTopPoint);
             return UserActions.GetClipboardTextSafe() == "Current ";
         }
         #endregion Boolean
@@ -467,10 +468,10 @@ namespace LeadGenApp.viewmodels
 
         private void CopyCompanyNameFromCurrentRoleText()
         {
-            if (CurrentPositionIsOnBottom())
-                UserActions.CopyFromWithTripleClick(RoleAtCompanyBottomTextPointScreen);
+            if (CurrentPositionIsOnTop())
+                UserActions.CopyFromWithTripleClick(RoleAtCompanyTopTextPoint);
             else
-                UserActions.CopyFromWithTripleClick(RoleAtCompanyTopTextPointScreen);
+                UserActions.CopyFromWithTripleClick(RoleAtCompanyBottomTextPoint);
 
             Clipboard.SetText(GetCompanyNameFromRoleAtCompanyText(UserActions.GetClipboardTextSafe()));
         }
