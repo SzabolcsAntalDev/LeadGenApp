@@ -57,9 +57,9 @@ namespace LeadGenApp.viewmodels
         private readonly Point SendDirectMessageButtonPointBigScreen = new Point(1940, 1325);
         private readonly Point EndOfNotepadPointBigScreen = new Point(2300, 1200);
         private readonly Point CopyLinkedinUrlTopButtonPointBigScreen = new Point(310, 875);
-        private readonly Point CopyLinkedinUrlBottomButtonPointBigScreen = new Point(310, 920);
+        private readonly Point CopyLinkedinUrlBottomButtonPointBigScreen = new Point(310, 930);
         private readonly Point BrowsersHyperlinkPointBigScreen = new Point(220, 75);
-        private readonly Point CurrentRoleTextOnTopPointBigScreen = new Point(170, 840); // Szabi
+        private readonly Point CurrentRoleTextOnTopPointBigScreen = new Point(170, 800);
         private readonly Point RoleAtCompanyTopTextPointBigScreen = new Point(220, 860);
         private readonly Point RoleAtCompanyBottomTextPointBigScreen = new Point(220, 920);
 
