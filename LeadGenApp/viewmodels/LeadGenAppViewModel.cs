@@ -132,8 +132,9 @@ namespace LeadGenApp.viewmodels
             }
         }
 
-        public ICommand SendOnylDirectMessagesToOpenProfilesButtonCommand { get; }
-        public ICommand SendOnylDirectMessagesToAllProfilesButtonCommand { get; }
+        public ICommand SendOnlyDirectMessagesToOpenProfilesButtonCommand { get; }
+        public ICommand SendOnlyDirectMessagesToAllProfilesButtonCommand { get; }
+        public ICommand SendOnlyConnectsToClosedProfilesButtonCommand { get; }
         public ICommand ConnectCommand { get; }
         public ICommand ExtractDataCommand { get; }
 
@@ -141,8 +142,9 @@ namespace LeadGenApp.viewmodels
         {
             SetupInfoText();
 
-            SendOnylDirectMessagesToOpenProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnylDirectMessagesToOpenProfilesButtonCommand());
-            SendOnylDirectMessagesToAllProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnylDirectMessagesToAllProfilesButtonCommand());
+            SendOnlyDirectMessagesToOpenProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnlyDirectMessagesToOpenProfilesButtonCommand());
+            SendOnlyDirectMessagesToAllProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnlyDirectMessagesToAllProfilesButtonCommand());
+            SendOnlyConnectsToClosedProfilesButtonCommand = new RelayCommand(_ => ExecuteSendOnlyConnectsToClosedProfilesButtonCommand());
             ConnectCommand = new RelayCommand(_ => ExecuteConnectCommand());
             ExtractDataCommand = new RelayCommand(_ => ExecuteExtractDataCommand());
         }
@@ -180,7 +182,7 @@ namespace LeadGenApp.viewmodels
             InfoText = text;
         }
 
-        private void ExecuteSendOnylDirectMessagesToOpenProfilesButtonCommand()
+        private void ExecuteSendOnlyDirectMessagesToOpenProfilesButtonCommand()
         {
             Thread.Sleep(WaitBeforeActionStart);
 
@@ -201,7 +203,7 @@ namespace LeadGenApp.viewmodels
             }
         }
 
-        private void ExecuteSendOnylDirectMessagesToAllProfilesButtonCommand()
+        private void ExecuteSendOnlyDirectMessagesToAllProfilesButtonCommand()
         {
             Thread.Sleep(WaitBeforeActionStart);
 
@@ -212,6 +214,27 @@ namespace LeadGenApp.viewmodels
 
                 ClickOnMessageButton();
                 SendDirectMessage();
+
+                if (IsTesting)
+                    return;
+                else
+                    UserActions.ControlTab();
+            }
+        }
+
+        private void ExecuteSendOnlyConnectsToClosedProfilesButtonCommand()
+        {
+            Thread.Sleep(WaitBeforeActionStart);
+
+            while (true)
+            {
+                if (IsEmptyTab())
+                    return;
+
+                ClickOnMessageButton();
+
+                if (!IsFreeToOpenProfile())
+                    SendInvitation();
 
                 if (IsTesting)
                     return;
