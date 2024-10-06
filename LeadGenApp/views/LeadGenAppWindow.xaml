@@ -93,7 +93,7 @@
             </Grid>
 
             <Button Grid.Row="2" Content="send only direct messages to open profiles" Command="{Binding SendOnlyDirectMessagesToOpenProfilesButtonCommand}" />
-            <Button Grid.Row="3" Content="send only direct messages to all profiles" Command="{Binding SendOnylDirectMessagesToAllProfilesButtonCommand}" />
+            <Button Grid.Row="3" Content="send only direct messages to all profiles" Command="{Binding SendOnlyDirectMessagesToAllProfilesButtonCommand}" />
             <Button Grid.Row="4" Content="send only connects to closed profiles" Command="{Binding SendOnlyConnectsToClosedProfilesButtonCommand}" />
             <Button Grid.Row="5" Content="connect" Command="{Binding ConnectCommand}" />
             <Separator Grid.Row="6" />
